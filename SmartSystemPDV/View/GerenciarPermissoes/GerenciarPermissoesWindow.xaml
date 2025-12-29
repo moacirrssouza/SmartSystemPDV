@@ -1,0 +1,313 @@
+﻿<Window x:Class="SmartSystemPDV.View.GerenciarPermissoes.GerenciarPermissoesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmartSystemPDV.View.GerenciarPermissoes"
+        mc:Ignorable="d"
+       Title="DataPlace - Gerenciar Permissões" 
+        Height="650" 
+        Width="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize">
+
+    <Window.Resources>
+        <!-- Estilo para CheckBox -->
+        <Style x:Key="ModernCheckBox" TargetType="CheckBox">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,5"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Estilo para botões -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#1A4D7A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2563A8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#28A745"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#218838"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#6C757D"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5A6268"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para GroupBox -->
+        <Style x:Key="ModernGroupBox" TargetType="GroupBox">
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#1A4D7A"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Border Grid.Row="0" Background="#1A4D7A">
+            <Grid Margin="20">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="🔐 Gerenciar Permissões de Acesso" 
+                               FontSize="22" 
+                               FontWeight="Bold" 
+                               Foreground="White"
+                               Margin="0,0,0,5"/>
+                    <TextBlock x:Name="txtUsuarioNome"
+                               Text="Usuário: [Nome]" 
+                               FontSize="14" 
+                               Foreground="#CCCCCC"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Conteúdo -->
+        <Border Grid.Row="1" 
+                Background="White" 
+                Margin="20,20,20,10">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="20">
+
+                    <!-- Info do Perfil -->
+                    <Border Background="#FFF3E0" 
+                            Padding="15" 
+                            CornerRadius="5"
+                            Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock x:Name="txtPerfilAtual"
+                                       Text="Perfil Atual: Administrador" 
+                                       FontSize="14" 
+                                       FontWeight="Bold"
+                                       Foreground="#E65100"
+                                       Margin="0,0,0,5"/>
+                            <TextBlock Text="As permissões abaixo são baseadas no perfil selecionado. Você pode personalizar individualmente cada permissão." 
+                                       FontSize="12" 
+                                       Foreground="#666666"
+                                       TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Botões de Atalho -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <Button Content="✓ Marcar Todas" 
+                                Click="BtnMarcarTodas_Click"
+                                Style="{StaticResource SuccessButton}"
+                                Padding="15,8"/>
+                        <Button Content="✗ Desmarcar Todas" 
+                                Click="BtnDesmarcarTodas_Click"
+                                Style="{StaticResource SecondaryButton}"
+                                Padding="15,8"/>
+                        <Button Content="🔄 Restaurar Padrão do Perfil" 
+                                Click="BtnRestaurarPadrao_Click"
+                                Style="{StaticResource PrimaryButton}"
+                                Padding="15,8"/>
+                    </StackPanel>
+
+                    <!-- Módulo: Produtos -->
+                    <GroupBox Header="📦 Módulo de Produtos" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkProdutosVisualizar" 
+                                      Content="Visualizar Produtos" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkProdutosCadastrar" 
+                                      Content="Cadastrar Produtos" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkProdutosEditar" 
+                                      Content="Editar Produtos" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkProdutosExcluir" 
+                                      Content="Excluir Produtos" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkProdutosImportar" 
+                                      Content="Importar/Exportar Produtos" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Módulo: Estoque -->
+                    <GroupBox Header="📊 Módulo de Estoque" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkEstoqueVisualizar" 
+                                      Content="Visualizar Estoque" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkEstoqueEntrada" 
+                                      Content="Registrar Entrada" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkEstoqueSaida" 
+                                      Content="Registrar Saída" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkEstoqueAjuste" 
+                                      Content="Fazer Ajustes de Estoque" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkEstoqueHistorico" 
+                                      Content="Visualizar Histórico" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Módulo: Vendas -->
+                    <GroupBox Header="💰 Módulo de Vendas" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkVendasVisualizar" 
+                                      Content="Visualizar Vendas" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkVendasRealizar" 
+                                      Content="Realizar Vendas" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkVendasCancelar" 
+                                      Content="Cancelar Vendas" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkVendasDesconto" 
+                                      Content="Aplicar Descontos" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkVendasDevolucao" 
+                                      Content="Processar Devoluções" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Módulo: Financeiro -->
+                    <GroupBox Header="💵 Módulo Financeiro" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkFinanceiroVisualizar" 
+                                      Content="Visualizar Dados Financeiros" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkFinanceiroContas" 
+                                      Content="Gerenciar Contas a Pagar/Receber" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkFinanceiroCaixa" 
+                                      Content="Abrir/Fechar Caixa" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkFinanceiroRelatorios" 
+                                      Content="Gerar Relatórios Financeiros" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Módulo: Clientes -->
+                    <GroupBox Header="👥 Módulo de Clientes" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkClientesVisualizar" 
+                                      Content="Visualizar Clientes" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkClientesCadastrar" 
+                                      Content="Cadastrar Clientes" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkClientesEditar" 
+                                      Content="Editar Clientes" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkClientesExcluir" 
+                                      Content="Excluir Clientes" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Módulo: Relatórios -->
+                    <GroupBox Header="📈 Módulo de Relatórios" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkRelatoriosVendas" 
+                                      Content="Relatórios de Vendas" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkRelatoriosEstoque" 
+                                      Content="Relatórios de Estoque" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkRelatoriosFinanceiro" 
+                                      Content="Relatórios Financeiros" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkRelatoriosGerenciais" 
+                                      Content="Relatórios Gerenciais" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkRelatoriosExportar" 
+                                      Content="Exportar Relatórios" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Módulo: Sistema -->
+                    <GroupBox Header="⚙️ Módulo de Sistema" Style="{StaticResource ModernGroupBox}">
+                        <StackPanel>
+                            <CheckBox x:Name="chkSistemaUsuarios" 
+                                      Content="Gerenciar Usuários" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkSistemaPermissoes" 
+                                      Content="Gerenciar Permissões" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkSistemaConfiguracoes" 
+                                      Content="Configurações do Sistema" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkSistemaBackup" 
+                                      Content="Realizar Backup" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                            <CheckBox x:Name="chkSistemaLogs" 
+                                      Content="Visualizar Logs do Sistema" 
+                                      Style="{StaticResource ModernCheckBox}"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Rodapé com Botões -->
+        <Border Grid.Row="2" 
+                Background="#F5F5F5" 
+                BorderBrush="#DDDDDD" 
+                BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" 
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center">
+                <Button x:Name="btnSalvarPermissoes"
+                        Content="💾 Salvar Permissões"
+                        Style="{StaticResource SuccessButton}"
+                        Click="BtnSalvarPermissoes_Click"
+                        Padding="30,12"/>
+
+                <Button x:Name="btnFechar"
+                        Content="✖ Fechar"
+                        Style="{StaticResource SecondaryButton}"
+                        Click="BtnFechar_Click"
+                        Padding="30,12"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

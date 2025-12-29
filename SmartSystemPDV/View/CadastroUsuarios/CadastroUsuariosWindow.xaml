@@ -1,0 +1,525 @@
+﻿<Window x:Class="SmartSystemPDV.View.CadastroUsuarios.CadastroUsuariosWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SmartSystemPDV.View.CadastroUsuarios"
+        xmlns:conv="clr-namespace:SmartSystemPDV.Converters"
+        mc:Ignorable="d"
+        Title="DataPlace - Cadastro de Usuários" 
+        Height="700" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+
+    <Window.Resources>
+        <!-- Estilo para TextBox -->
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <!-- Estilo para PasswordBox -->
+        <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <!-- Estilo para ComboBox -->
+        <Style x:Key="ModernComboBox" TargetType="ComboBox">
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+
+        <!-- Estilo para Label -->
+        <Style x:Key="ModernLabel" TargetType="Label">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#333333"/>
+        </Style>
+
+        <!-- Estilo para botões -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#1A4D7A"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2563A8"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#CCCCCC"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#28A745"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#218838"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#DC3545"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#C82333"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#6C757D"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#5A6268"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="WarningButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FFC107"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E0A800"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para DataGrid -->
+        <Style x:Key="ModernDataGrid" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowHeight" Value="35"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Border Grid.Row="0" Background="#1A4D7A">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+                    <Button Content="←" 
+                            Click="BtnVoltar_Click"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderThickness="0"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Cursor="Hand"
+                            Padding="10,0"
+                            ToolTip="Voltar">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    CornerRadius="5"
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#33FFFFFF"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <TextBlock Text="👥 Cadastro de Usuários" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               Foreground="White"
+                               VerticalAlignment="Center"
+                               Margin="10,0"/>
+                </StackPanel>
+
+                <TextBlock Text="Usuário: Admin"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           Margin="20,0"
+                           Foreground="White"
+                           FontSize="14"/>
+            </Grid>
+        </Border>
+
+        <!-- Conteúdo Principal -->
+        <Grid Grid.Row="1" Background="#F5F5F5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="450"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Painel de Cadastro -->
+            <Border Grid.Column="0" 
+                    Background="White" 
+                    Margin="15"
+                    CornerRadius="10"
+                    BorderBrush="#DDDDDD"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <TextBlock Text="Dados do Usuário" 
+                                   FontSize="18" 
+                                   FontWeight="Bold"
+                                   Foreground="#1A4D7A"
+                                   Margin="0,0,0,20"/>
+
+                        <!-- ID -->
+                        <Label Content="ID:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtId" 
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,0,15"
+                                 IsReadOnly="True"
+                                 Background="#F0F0F0"/>
+
+                        <!-- Nome Completo -->
+                        <Label Content="Nome Completo:*" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtNome" 
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,0,15"
+                                 MaxLength="100"/>
+
+                        <!-- Nome de Usuário (Login) -->
+                        <Label Content="Nome de Usuário (Login):*" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtUsuario" 
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,0,15"
+                                 MaxLength="50"/>
+
+                        <!-- Email -->
+                        <Label Content="Email:*" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtEmail" 
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,0,15"
+                                 MaxLength="100"/>
+
+                        <!-- Senha -->
+                        <Label Content="Senha:*" Style="{StaticResource ModernLabel}"/>
+                        <Grid Margin="0,0,0,15">
+                            <PasswordBox x:Name="txtSenha"
+                                         Style="{StaticResource ModernPasswordBox}"/>
+                            <Button x:Name="btnMostrarSenha"
+                                    Content="👁"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Width="30"
+                                    Height="30"
+                                    Margin="0,0,5,0"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Foreground="#666666"
+                                    FontSize="16"
+                                    Cursor="Hand"
+                                    Click="BtnMostrarSenha_Click"/>
+                        </Grid>
+
+                        <!-- Confirmar Senha -->
+                        <Label Content="Confirmar Senha:*" Style="{StaticResource ModernLabel}"/>
+                        <PasswordBox x:Name="txtConfirmarSenha"
+                                     Style="{StaticResource ModernPasswordBox}"
+                                     Margin="0,0,0,15"/>
+
+                        <!-- Cargo/Função -->
+                        <Label Content="Cargo/Função:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtCargo" 
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,0,15"
+                                 MaxLength="50"/>
+
+                        <!-- Departamento -->
+                        <Label Content="Departamento:" Style="{StaticResource ModernLabel}"/>
+                        <ComboBox x:Name="cbDepartamento" 
+                                  Style="{StaticResource ModernComboBox}"
+                                  Margin="0,0,0,15">
+                            <ComboBoxItem Content="Selecione..." IsSelected="True"/>
+                            <ComboBoxItem Content="Administrativo"/>
+                            <ComboBoxItem Content="Vendas"/>
+                            <ComboBoxItem Content="Estoque"/>
+                            <ComboBoxItem Content="Financeiro"/>
+                            <ComboBoxItem Content="TI"/>
+                            <ComboBoxItem Content="RH"/>
+                            <ComboBoxItem Content="Gerência"/>
+                        </ComboBox>
+
+                        <!-- Telefone -->
+                        <Label Content="Telefone:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtTelefone" 
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,0,15"
+                                 MaxLength="15"/>
+
+                        <!-- Perfil de Acesso -->
+                        <Label Content="Perfil de Acesso:*" Style="{StaticResource ModernLabel}"/>
+                        <ComboBox x:Name="cbPerfil" 
+                                  Style="{StaticResource ModernComboBox}"
+                                  Margin="0,0,0,15"
+                                  SelectionChanged="CbPerfil_SelectionChanged">
+                            <ComboBoxItem Content="Selecione..." IsSelected="True"/>
+                            <ComboBoxItem Content="Administrador" Tag="admin"/>
+                            <ComboBoxItem Content="Gerente" Tag="gerente"/>
+                            <ComboBoxItem Content="Vendedor" Tag="vendedor"/>
+                            <ComboBoxItem Content="Estoquista" Tag="estoquista"/>
+                            <ComboBoxItem Content="Operador" Tag="operador"/>
+                        </ComboBox>
+
+                        <!-- Descrição do Perfil -->
+                        <Border Background="#E3F2FD" 
+                                Padding="10" 
+                                CornerRadius="5"
+                                Margin="0,0,0,15"
+                                Visibility="{Binding ElementName=txtDescricaoPerfil, Path=Text, Converter={StaticResource StringToVisibilityConverter}}">
+                            <TextBlock x:Name="txtDescricaoPerfil"
+                                       TextWrapping="Wrap"
+                                       FontSize="12"
+                                       Foreground="#1565C0"/>
+                        </Border>
+
+                        <!-- Status -->
+                        <Label Content="Status:" Style="{StaticResource ModernLabel}"/>
+                        <ComboBox x:Name="cbStatus" 
+                                  Style="{StaticResource ModernComboBox}"
+                                  Margin="0,0,0,20">
+                            <ComboBoxItem Content="Ativo" IsSelected="True"/>
+                            <ComboBoxItem Content="Inativo"/>
+                            <ComboBoxItem Content="Bloqueado"/>
+                        </ComboBox>
+
+                        <TextBlock Text="* Campos obrigatórios" 
+                                   FontSize="11"
+                                   Foreground="#666666"
+                                   FontStyle="Italic"
+                                   Margin="0,0,0,15"/>
+
+                        <!-- Botões de Ação -->
+                        <StackPanel Orientation="Horizontal" 
+                                   HorizontalAlignment="Center"
+                                   Margin="0,10,0,0">
+                            <Button x:Name="btnNovo"
+                                    Content="🆕 Novo"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Click="BtnNovo_Click"/>
+
+                            <Button x:Name="btnSalvar"
+                                    Content="💾 Salvar"
+                                    Style="{StaticResource SuccessButton}"
+                                    Click="BtnSalvar_Click"/>
+
+                            <Button x:Name="btnCancelar"
+                                    Content="✖ Cancelar"
+                                    Style="{StaticResource SecondaryButton}"
+                                    Click="BtnCancelar_Click"/>
+                        </StackPanel>
+
+                        <Separator Margin="0,20,0,20"/>
+
+                        <!-- Botão Gerenciar Permissões -->
+                        <Button x:Name="btnGerenciarPermissoes"
+                                Content="🔐 Gerenciar Permissões"
+                                Style="{StaticResource WarningButton}"
+                                Width="250"
+                                Click="BtnGerenciarPermissoes_Click"
+                                IsEnabled="False"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+            <!-- Painel de Lista de Usuários -->
+            <Border Grid.Column="1" 
+                    Background="White" 
+                    Margin="15,15,15,15"
+                    CornerRadius="10"
+                    BorderBrush="#DDDDDD"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                </Border.Effect>
+
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Título -->
+                    <TextBlock Grid.Row="0"
+                               Text="Lista de Usuários" 
+                               FontSize="18" 
+                               FontWeight="Bold"
+                               Foreground="#1A4D7A"
+                               Margin="0,0,0,15"/>
+
+                    <!-- Barra de Pesquisa -->
+                    <Grid Grid.Row="1" Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="txtPesquisa"
+                                 Grid.Column="0"
+                                 Style="{StaticResource ModernTextBox}"
+                                 Margin="0,0,10,0"
+                                 TextChanged="TxtPesquisa_TextChanged"/>
+
+                        <TextBlock Grid.Column="0"
+                                   IsHitTestVisible="False"
+                                   Text="🔍 Pesquisar usuário..."
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Left"
+                                   Margin="15,0,0,0"
+                                   Foreground="#999999"
+                                   FontSize="14">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=txtPesquisa}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <ComboBox Grid.Column="1"
+                                  x:Name="cbFiltroPerfil"
+                                  Style="{StaticResource ModernComboBox}"
+                                  Width="150"
+                                  Margin="0,0,10,0"
+                                  SelectionChanged="CbFiltroPerfil_SelectionChanged">
+                            <ComboBoxItem Content="Todos" IsSelected="True"/>
+                            <ComboBoxItem Content="Administrador"/>
+                            <ComboBoxItem Content="Gerente"/>
+                            <ComboBoxItem Content="Vendedor"/>
+                            <ComboBoxItem Content="Estoquista"/>
+                            <ComboBoxItem Content="Operador"/>
+                        </ComboBox>
+
+                        <ComboBox Grid.Column="2"
+                                  x:Name="cbFiltroStatus"
+                                  Style="{StaticResource ModernComboBox}"
+                                  Width="120"
+                                  SelectionChanged="CbFiltroStatus_SelectionChanged">
+                            <ComboBoxItem Content="Todos" IsSelected="True"/>
+                            <ComboBoxItem Content="Ativo"/>
+                            <ComboBoxItem Content="Inativo"/>
+                            <ComboBoxItem Content="Bloqueado"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <!-- DataGrid -->
+                    <DataGrid Grid.Row="2"
+                              x:Name="dgUsuarios"
+                              Style="{StaticResource ModernDataGrid}"
+                              SelectionChanged="DgUsuarios_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
+                            <DataGridTextColumn Header="Usuário" Binding="{Binding Usuario}" Width="120"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
+                            <DataGridTextColumn Header="Perfil" Binding="{Binding Perfil}" Width="120"/>
+                            <DataGridTextColumn Header="Departamento" Binding="{Binding Departamento}" Width="130"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="Bloqueado">
+                                        <Setter Property="Background" Value="#FFEBEE"/>
+                                        <Setter Property="Foreground" Value="#C62828"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="Inativo">
+                                        <Setter Property="Foreground" Value="#999999"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+
+                    <!-- Rodapé com ações -->
+                    <StackPanel Grid.Row="3" 
+                               Orientation="Horizontal" 
+                               HorizontalAlignment="Right"
+                               Margin="0,15,0,0">
+                        <Button x:Name="btnEditar"
+                                Content="✏ Editar"
+                                Style="{StaticResource PrimaryButton}"
+                                Click="BtnEditar_Click"
+                                IsEnabled="False"/>
+
+                        <Button x:Name="btnResetarSenha"
+                                Content="🔑 Resetar Senha"
+                                Style="{StaticResource WarningButton}"
+                                Click="BtnResetarSenha_Click"
+                                IsEnabled="False"/>
+
+                        <Button x:Name="btnExcluir"
+                                Content="🗑 Excluir"
+                                Style="{StaticResource DangerButton}"
+                                Click="BtnExcluir_Click"
+                                IsEnabled="False"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
