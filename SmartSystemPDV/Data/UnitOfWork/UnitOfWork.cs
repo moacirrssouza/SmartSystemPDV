@@ -2,6 +2,7 @@
 using SmartSystemPDV.Data.Repositories.CadastroUsuarios;
 using SmartSystemPDV.Repositories.CadastroProduto;
 using Microsoft.EntityFrameworkCore.Storage;
+using SmartSystemPDV.Data.Context;
 
 namespace SmartSystemPDV.Data.UnitOfWork;
 

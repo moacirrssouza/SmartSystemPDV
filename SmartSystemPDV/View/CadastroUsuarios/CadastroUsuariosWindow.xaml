@@ -6,45 +6,51 @@
         xmlns:local="clr-namespace:SmartSystemPDV.View.CadastroUsuarios"
         xmlns:conv="clr-namespace:SmartSystemPDV.Converters"
         mc:Ignorable="d"
-        Title="DataPlace - Cadastro de Usuários" 
-        Height="700" 
-        Width="1200"
+        Title="Cadastro de Usuários" 
+        Height="750" 
+        Width="1400"
+        MinHeight="700"
+        MinWidth="1300"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized">
 
     <Window.Resources>
         <!-- Estilo para TextBox -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <!-- Estilo para PasswordBox -->
         <Style x:Key="ModernPasswordBox" TargetType="PasswordBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <!-- Estilo para ComboBox -->
         <Style x:Key="ModernComboBox" TargetType="ComboBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <!-- Estilo para Label -->
         <Style x:Key="ModernLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Padding" Value="0,0,0,4"/>
         </Style>
 
         <!-- Estilo para botões -->
@@ -52,16 +58,16 @@
             <Setter Property="Background" Value="#1A4D7A"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Margin" Value="4"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="5"
+                                CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
@@ -125,34 +131,54 @@
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="SelectionMode" Value="Single"/>
             <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
-            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
             <Setter Property="BorderBrush" Value="#DDDDDD"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="RowHeight" Value="35"/>
+            <Setter Property="RowHeight" Value="32"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EEEEEE"/>
+        </Style>
+
+        <!-- Estilo para Cards -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.15" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="#F5F7FA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="65"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Cabeçalho -->
         <Border Grid.Row="0" Background="#1A4D7A">
-            <Grid>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Color="#000000"/>
+            </Border.Effect>
+
+            <Grid Margin="20,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Content="←" 
                             Click="BtnVoltar_Click"
                             Background="Transparent"
                             Foreground="White"
                             BorderThickness="0"
-                            FontSize="24"
+                            FontSize="22"
                             FontWeight="Bold"
                             Cursor="Hand"
-                            Padding="10,0"
+                            Width="40"
+                            Height="40"
                             ToolTip="Voltar">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -160,8 +186,7 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}" 
-                                                    CornerRadius="5"
-                                                    Padding="{TemplateBinding Padding}">
+                                                    CornerRadius="4">
                                                 <ContentPresenter HorizontalAlignment="Center" 
                                                                 VerticalAlignment="Center"/>
                                             </Border>
@@ -170,7 +195,7 @@
                                 </Setter>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#33FFFFFF"/>
+                                        <Setter Property="Background" Value="#2A5D8A"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -178,80 +203,93 @@
                     </Button>
 
                     <TextBlock Text="👥 Cadastro de Usuários" 
-                               FontSize="24" 
+                               FontSize="22" 
                                FontWeight="Bold" 
                                Foreground="White"
                                VerticalAlignment="Center"
-                               Margin="10,0"/>
+                               Margin="12,0,0,0"/>
                 </StackPanel>
 
                 <TextBlock Text="Usuário: Admin"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
-                           Margin="20,0"
                            Foreground="White"
-                           FontSize="14"/>
+                           FontSize="13"
+                           Opacity="0.9"/>
             </Grid>
         </Border>
 
         <!-- Conteúdo Principal -->
-        <Grid Grid.Row="1" Background="#F5F5F5">
+        <Grid Grid.Row="1" Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="450"/>
+                <ColumnDefinition Width="420"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Painel de Cadastro -->
             <Border Grid.Column="0" 
-                    Background="White" 
-                    Margin="15"
-                    CornerRadius="10"
-                    BorderBrush="#DDDDDD"
-                    BorderThickness="1">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
-                </Border.Effect>
+                    Style="{StaticResource CardStyle}"
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Stretch">
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
+                    <StackPanel>
                         <TextBlock Text="Dados do Usuário" 
-                                   FontSize="18" 
+                                   FontSize="16" 
                                    FontWeight="Bold"
                                    Foreground="#1A4D7A"
-                                   Margin="0,0,0,20"/>
+                                   Margin="0,0,0,16"/>
 
                         <!-- ID -->
                         <Label Content="ID:" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtId" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,10"
                                  IsReadOnly="True"
-                                 Background="#F0F0F0"/>
+                                 Background="#F8F9FA"/>
 
                         <!-- Nome Completo -->
                         <Label Content="Nome Completo:*" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtNome" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,10"
                                  MaxLength="100"/>
 
-                        <!-- Nome de Usuário (Login) -->
-                        <Label Content="Nome de Usuário (Login):*" Style="{StaticResource ModernLabel}"/>
-                        <TextBox x:Name="txtUsuario" 
-                                 Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
-                                 MaxLength="50"/>
+                        <!-- Grid com 2 colunas -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Nome de Usuário -->
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Usuário (Login):*" Style="{StaticResource ModernLabel}"/>
+                                <TextBox x:Name="txtUsuario" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         MaxLength="50"/>
+                            </StackPanel>
+
+                            <!-- Cargo -->
+                            <StackPanel Grid.Column="2">
+                                <Label Content="Cargo/Função:" Style="{StaticResource ModernLabel}"/>
+                                <TextBox x:Name="txtCargo" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         MaxLength="50"/>
+                            </StackPanel>
+                        </Grid>
 
                         <!-- Email -->
                         <Label Content="Email:*" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtEmail" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,10"
                                  MaxLength="100"/>
 
                         <!-- Senha -->
                         <Label Content="Senha:*" Style="{StaticResource ModernLabel}"/>
-                        <Grid Margin="0,0,0,15">
+                        <Grid Margin="0,0,0,10">
                             <PasswordBox x:Name="txtSenha"
                                          Style="{StaticResource ModernPasswordBox}"/>
                             <Button x:Name="btnMostrarSenha"
@@ -260,11 +298,11 @@
                                     VerticalAlignment="Center"
                                     Width="30"
                                     Height="30"
-                                    Margin="0,0,5,0"
+                                    Margin="0,0,2,0"
                                     Background="Transparent"
                                     BorderThickness="0"
                                     Foreground="#666666"
-                                    FontSize="16"
+                                    FontSize="14"
                                     Cursor="Hand"
                                     Click="BtnMostrarSenha_Click"/>
                         </Grid>
@@ -273,106 +311,137 @@
                         <Label Content="Confirmar Senha:*" Style="{StaticResource ModernLabel}"/>
                         <PasswordBox x:Name="txtConfirmarSenha"
                                      Style="{StaticResource ModernPasswordBox}"
-                                     Margin="0,0,0,15"/>
+                                     Margin="0,0,0,10"/>
 
-                        <!-- Cargo/Função -->
-                        <Label Content="Cargo/Função:" Style="{StaticResource ModernLabel}"/>
-                        <TextBox x:Name="txtCargo" 
-                                 Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
-                                 MaxLength="50"/>
+                        <!-- Grid Departamento e Telefone -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <!-- Departamento -->
-                        <Label Content="Departamento:" Style="{StaticResource ModernLabel}"/>
-                        <ComboBox x:Name="cbDepartamento" 
-                                  Style="{StaticResource ModernComboBox}"
-                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="Selecione..." IsSelected="True"/>
-                            <ComboBoxItem Content="Administrativo"/>
-                            <ComboBoxItem Content="Vendas"/>
-                            <ComboBoxItem Content="Estoque"/>
-                            <ComboBoxItem Content="Financeiro"/>
-                            <ComboBoxItem Content="TI"/>
-                            <ComboBoxItem Content="RH"/>
-                            <ComboBoxItem Content="Gerência"/>
-                        </ComboBox>
+                            <!-- Departamento -->
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Departamento:" Style="{StaticResource ModernLabel}"/>
+                                <ComboBox x:Name="cbDepartamento" 
+                                          Style="{StaticResource ModernComboBox}">
+                                    <ComboBoxItem Content="Selecione..." IsSelected="True"/>
+                                    <ComboBoxItem Content="Administrativo"/>
+                                    <ComboBoxItem Content="Vendas"/>
+                                    <ComboBoxItem Content="Estoque"/>
+                                    <ComboBoxItem Content="Financeiro"/>
+                                    <ComboBoxItem Content="TI"/>
+                                    <ComboBoxItem Content="RH"/>
+                                    <ComboBoxItem Content="Gerência"/>
+                                </ComboBox>
+                            </StackPanel>
 
-                        <!-- Telefone -->
-                        <Label Content="Telefone:" Style="{StaticResource ModernLabel}"/>
-                        <TextBox x:Name="txtTelefone" 
-                                 Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
-                                 MaxLength="15"/>
+                            <!-- Telefone -->
+                            <StackPanel Grid.Column="2">
+                                <Label Content="Telefone:" Style="{StaticResource ModernLabel}"/>
+                                <TextBox x:Name="txtTelefone" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         MaxLength="15"/>
+                            </StackPanel>
+                        </Grid>
 
-                        <!-- Perfil de Acesso -->
-                        <Label Content="Perfil de Acesso:*" Style="{StaticResource ModernLabel}"/>
-                        <ComboBox x:Name="cbPerfil" 
-                                  Style="{StaticResource ModernComboBox}"
-                                  Margin="0,0,0,15"
-                                  SelectionChanged="CbPerfil_SelectionChanged">
-                            <ComboBoxItem Content="Selecione..." IsSelected="True"/>
-                            <ComboBoxItem Content="Administrador" Tag="admin"/>
-                            <ComboBoxItem Content="Gerente" Tag="gerente"/>
-                            <ComboBoxItem Content="Vendedor" Tag="vendedor"/>
-                            <ComboBoxItem Content="Estoquista" Tag="estoquista"/>
-                            <ComboBoxItem Content="Operador" Tag="operador"/>
-                        </ComboBox>
+                        <!-- Grid Perfil e Status -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Perfil de Acesso -->
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Perfil:*" Style="{StaticResource ModernLabel}"/>
+                                <ComboBox x:Name="cbPerfil" 
+                                          Style="{StaticResource ModernComboBox}"
+                                          SelectionChanged="CbPerfil_SelectionChanged">
+                                    <ComboBoxItem Content="Selecione..." IsSelected="True"/>
+                                    <ComboBoxItem Content="Administrador" Tag="admin"/>
+                                    <ComboBoxItem Content="Gerente" Tag="gerente"/>
+                                    <ComboBoxItem Content="Vendedor" Tag="vendedor"/>
+                                    <ComboBoxItem Content="Estoquista" Tag="estoquista"/>
+                                    <ComboBoxItem Content="Operador" Tag="operador"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Status -->
+                            <StackPanel Grid.Column="2">
+                                <Label Content="Status:" Style="{StaticResource ModernLabel}"/>
+                                <ComboBox x:Name="cbStatus" 
+                                          Style="{StaticResource ModernComboBox}">
+                                    <ComboBoxItem Content="Ativo" IsSelected="True"/>
+                                    <ComboBoxItem Content="Inativo"/>
+                                    <ComboBoxItem Content="Bloqueado"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
 
                         <!-- Descrição do Perfil -->
                         <Border Background="#E3F2FD" 
                                 Padding="10" 
-                                CornerRadius="5"
-                                Margin="0,0,0,15"
+                                CornerRadius="4"
+                                Margin="0,0,0,16"
                                 Visibility="{Binding ElementName=txtDescricaoPerfil, Path=Text, Converter={StaticResource StringToVisibilityConverter}}">
                             <TextBlock x:Name="txtDescricaoPerfil"
                                        TextWrapping="Wrap"
-                                       FontSize="12"
+                                       FontSize="11"
                                        Foreground="#1565C0"/>
                         </Border>
 
-                        <!-- Status -->
-                        <Label Content="Status:" Style="{StaticResource ModernLabel}"/>
-                        <ComboBox x:Name="cbStatus" 
-                                  Style="{StaticResource ModernComboBox}"
-                                  Margin="0,0,0,20">
-                            <ComboBoxItem Content="Ativo" IsSelected="True"/>
-                            <ComboBoxItem Content="Inativo"/>
-                            <ComboBoxItem Content="Bloqueado"/>
-                        </ComboBox>
-
                         <TextBlock Text="* Campos obrigatórios" 
-                                   FontSize="11"
-                                   Foreground="#666666"
+                                   FontSize="10"
+                                   Foreground="#999999"
                                    FontStyle="Italic"
-                                   Margin="0,0,0,15"/>
+                                   Margin="0,0,0,16"/>
 
                         <!-- Botões de Ação -->
-                        <StackPanel Orientation="Horizontal" 
-                                   HorizontalAlignment="Center"
-                                   Margin="0,10,0,0">
+                        <StackPanel>
                             <Button x:Name="btnNovo"
-                                    Content="🆕 Novo"
+                                    Content="🆕 Novo Usuário"
                                     Style="{StaticResource PrimaryButton}"
+                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,0"
                                     Click="BtnNovo_Click"/>
 
-                            <Button x:Name="btnSalvar"
-                                    Content="💾 Salvar"
-                                    Style="{StaticResource SuccessButton}"
-                                    Click="BtnSalvar_Click"/>
+                            <Grid Margin="0,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button x:Name="btnCancelar"
-                                    Content="✖ Cancelar"
-                                    Style="{StaticResource SecondaryButton}"
-                                    Click="BtnCancelar_Click"/>
+                                <Button x:Name="btnSalvar"
+                                        Grid.Column="0"
+                                        Content="💾 Salvar"
+                                        Style="{StaticResource SuccessButton}"
+                                        HorizontalAlignment="Stretch"
+                                        Margin="0,0,4,0"
+                                        Click="BtnSalvar_Click"/>
+
+                                <Button x:Name="btnCancelar"
+                                        Grid.Column="1"
+                                        Content="✖ Cancelar"
+                                        Style="{StaticResource SecondaryButton}"
+                                        HorizontalAlignment="Stretch"
+                                        Margin="4,0,0,0"
+                                        Click="BtnCancelar_Click"/>
+                            </Grid>
                         </StackPanel>
 
-                        <Separator Margin="0,20,0,20"/>
+                        <Rectangle Height="1" 
+                                  Fill="#E0E0E0"
+                                  Margin="0,20,0,20"/>
 
                         <!-- Botão Gerenciar Permissões -->
                         <Button x:Name="btnGerenciarPermissoes"
                                 Content="🔐 Gerenciar Permissões"
                                 Style="{StaticResource WarningButton}"
-                                Width="250"
+                                HorizontalAlignment="Stretch"
+                                Margin="0"
                                 Click="BtnGerenciarPermissoes_Click"
                                 IsEnabled="False"/>
                     </StackPanel>
@@ -381,16 +450,10 @@
 
             <!-- Painel de Lista de Usuários -->
             <Border Grid.Column="1" 
-                    Background="White" 
-                    Margin="15,15,15,15"
-                    CornerRadius="10"
-                    BorderBrush="#DDDDDD"
-                    BorderThickness="1">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
-                </Border.Effect>
+                    Style="{StaticResource CardStyle}"
+                    Margin="10,0,0,0">
 
-                <Grid Margin="20">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -400,53 +463,51 @@
 
                     <!-- Título -->
                     <TextBlock Grid.Row="0"
-                               Text="Lista de Usuários" 
-                               FontSize="18" 
+                               Text="📋 Lista de Usuários Cadastrados" 
+                               FontSize="16" 
                                FontWeight="Bold"
                                Foreground="#1A4D7A"
-                               Margin="0,0,0,15"/>
+                               Margin="0,0,0,16"/>
 
-                    <!-- Barra de Pesquisa -->
-                    <Grid Grid.Row="1" Margin="0,0,0,15">
+                    <!-- Barra de Pesquisa e Filtros -->
+                    <Grid Grid.Row="1" Margin="0,0,0,12">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="120"/>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox x:Name="txtPesquisa"
-                                 Grid.Column="0"
-                                 Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,10,0"
-                                 TextChanged="TxtPesquisa_TextChanged"/>
+                        <Grid Grid.Column="0" Margin="0,0,8,0">
+                            <TextBox x:Name="txtPesquisa"
+                                     Style="{StaticResource ModernTextBox}"
+                                     TextChanged="TxtPesquisa_TextChanged"/>
 
-                        <TextBlock Grid.Column="0"
-                                   IsHitTestVisible="False"
-                                   Text="🔍 Pesquisar usuário..."
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Left"
-                                   Margin="15,0,0,0"
-                                   Foreground="#999999"
-                                   FontSize="14">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, ElementName=txtPesquisa}" Value="">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            <TextBlock IsHitTestVisible="False"
+                                       Text="🔍 Pesquisar por nome, usuário ou email..."
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       Margin="12,0,0,0"
+                                       Foreground="#999999"
+                                       FontSize="13">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=txtPesquisa}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
 
                         <ComboBox Grid.Column="1"
                                   x:Name="cbFiltroPerfil"
                                   Style="{StaticResource ModernComboBox}"
-                                  Width="150"
-                                  Margin="0,0,10,0"
+                                  Margin="0,0,8,0"
                                   SelectionChanged="CbFiltroPerfil_SelectionChanged">
-                            <ComboBoxItem Content="Todos" IsSelected="True"/>
+                            <ComboBoxItem Content="Todos Perfis" IsSelected="True"/>
                             <ComboBoxItem Content="Administrador"/>
                             <ComboBoxItem Content="Gerente"/>
                             <ComboBoxItem Content="Vendedor"/>
@@ -457,7 +518,6 @@
                         <ComboBox Grid.Column="2"
                                   x:Name="cbFiltroStatus"
                                   Style="{StaticResource ModernComboBox}"
-                                  Width="120"
                                   SelectionChanged="CbFiltroStatus_SelectionChanged">
                             <ComboBoxItem Content="Todos" IsSelected="True"/>
                             <ComboBoxItem Content="Ativo"/>
@@ -472,13 +532,13 @@
                               Style="{StaticResource ModernDataGrid}"
                               SelectionChanged="DgUsuarios_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
-                            <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*"/>
-                            <DataGridTextColumn Header="Usuário" Binding="{Binding Usuario}" Width="120"/>
-                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="200"/>
-                            <DataGridTextColumn Header="Perfil" Binding="{Binding Perfil}" Width="120"/>
-                            <DataGridTextColumn Header="Departamento" Binding="{Binding Departamento}" Width="130"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                            <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*" MinWidth="150"/>
+                            <DataGridTextColumn Header="Usuário" Binding="{Binding Usuario}" Width="110"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*" MinWidth="180"/>
+                            <DataGridTextColumn Header="Perfil" Binding="{Binding Perfil}" Width="110"/>
+                            <DataGridTextColumn Header="Departamento" Binding="{Binding Departamento}" Width="120"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="85"/>
                         </DataGrid.Columns>
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow">
@@ -486,9 +546,11 @@
                                     <DataTrigger Binding="{Binding Status}" Value="Bloqueado">
                                         <Setter Property="Background" Value="#FFEBEE"/>
                                         <Setter Property="Foreground" Value="#C62828"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Status}" Value="Inativo">
                                         <Setter Property="Foreground" Value="#999999"/>
+                                        <Setter Property="FontStyle" Value="Italic"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -496,28 +558,45 @@
                     </DataGrid>
 
                     <!-- Rodapé com ações -->
-                    <StackPanel Grid.Row="3" 
-                               Orientation="Horizontal" 
-                               HorizontalAlignment="Right"
-                               Margin="0,15,0,0">
-                        <Button x:Name="btnEditar"
-                                Content="✏ Editar"
-                                Style="{StaticResource PrimaryButton}"
-                                Click="BtnEditar_Click"
-                                IsEnabled="False"/>
+                    <Grid Grid.Row="3" Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
 
-                        <Button x:Name="btnResetarSenha"
-                                Content="🔑 Resetar Senha"
-                                Style="{StaticResource WarningButton}"
-                                Click="BtnResetarSenha_Click"
-                                IsEnabled="False"/>
+                        <TextBlock Grid.Column="0"
+                                   x:Name="txtTotalUsuarios"
+                                   Text="Total: 0 usuário(s)"
+                                   VerticalAlignment="Center"
+                                   FontSize="12"
+                                   Foreground="#666666"/>
 
-                        <Button x:Name="btnExcluir"
-                                Content="🗑 Excluir"
-                                Style="{StaticResource DangerButton}"
-                                Click="BtnExcluir_Click"
-                                IsEnabled="False"/>
-                    </StackPanel>
+                        <StackPanel Grid.Column="2" 
+                                   Orientation="Horizontal" 
+                                   HorizontalAlignment="Right">
+                            <Button x:Name="btnEditar"
+                                    Content="✏️ Editar"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Width="100"
+                                    Click="BtnEditar_Click"
+                                    IsEnabled="False"/>
+
+                            <Button x:Name="btnResetarSenha"
+                                    Content="🔑 Resetar"
+                                    Style="{StaticResource WarningButton}"
+                                    Width="100"
+                                    Click="BtnResetarSenha_Click"
+                                    IsEnabled="False"/>
+
+                            <Button x:Name="btnExcluir"
+                                    Content="🗑️ Excluir"
+                                    Style="{StaticResource DangerButton}"
+                                    Width="100"
+                                    Click="BtnExcluir_Click"
+                                    IsEnabled="False"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>

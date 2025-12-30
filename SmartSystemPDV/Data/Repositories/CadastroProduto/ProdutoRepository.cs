@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmartSystemPDV.Data;
+using SmartSystemPDV.Data.Context;
 using SmartSystemPDV.Data.Repositories;
 using SmartSystemPDV.Data.Repositories.CadastroProduto;
 using SmartSystemPDV.Models;

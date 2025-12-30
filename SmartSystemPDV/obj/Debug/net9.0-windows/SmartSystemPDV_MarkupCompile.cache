@@ -4,15 +4,15 @@
 winexe
 C#
 .cs
-C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\
+C:\Projetos\SmartSystemPDV-Adega.git\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\
 SmartSystemPDV
 none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
-C:\Projetos\SmartSystemPDV\SmartSystemPDV\App.xaml
+C:\Projetos\SmartSystemPDV-Adega.git\SmartSystemPDV\SmartSystemPDV\App.xaml
 7-2124371203
 
-32330386345
+33801755231
 2371213841524
 View\CadastroProdutos\CadastroProdutosWindow.xaml;View\CadastroUsuarios\CadastroUsuariosWindow.xaml;View\ControleEstoque\ControleEstoqueWindow.xaml;View\GerenciarPermissoes\GerenciarPermissoesWindow.xaml;View\Login\LoginView.xaml;View\Main\MainWindow.xaml;View\Vendas\VendaWindow.xaml;
 

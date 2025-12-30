@@ -9,7 +9,7 @@ namespace SmartSystemPDV.View.CadastroUsuarios
 {
     public partial class CadastroUsuariosWindow : Window
     {
-        private ObservableCollection<Usuario> _usuarios = new();
+        private Dictionary<string, bool> permissoes;
 
         public CadastroUsuariosWindow()
         {

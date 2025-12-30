@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmartSystemPDV.Data;
+using SmartSystemPDV.Data.Context;
 using System.Linq.Expressions;
 
 namespace SmartSystemPDV.Data.Repositories;

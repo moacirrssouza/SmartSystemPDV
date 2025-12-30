@@ -2,13 +2,17 @@
 using SmartSystemPDV.Models;
 using System;
 
-namespace SmartSystemPDV.Data
+namespace SmartSystemPDV.Data.Context
 {
     /// <summary>
     /// Contexto do banco de dados - Configurado para SQL Server
     /// </summary>
     public class AppDbContext : DbContext
     {
+        public AppDbContext()
+        {
+        }
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -29,16 +33,16 @@ namespace SmartSystemPDV.Data
             {
                 // ===== CONFIGURAÇÃO SQL SERVER =====
                 // OPÇÃO 1: Autenticação Windows (Recomendado para rede local)
-                optionsBuilder.UseSqlServer(
-                    "Server=localhost;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
+                //optionsBuilder.UseSqlServer(
+                //    "Server=localhost;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
 
                 // OPÇÃO 2: Autenticação SQL Server (com usuário e senha)
                 // optionsBuilder.UseSqlServer(
                 //     "Server=localhost;Database=SmartSystemPDV;User Id=sa;Password=SuaSenha123;TrustServerCertificate=True;");
 
                 // OPÇÃO 3: SQL Server Express com nome da instância
-                // optionsBuilder.UseSqlServer(
-                //     "Server=.\\SQLEXPRESS;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer(
+                    "Server=.\\SQLEXPRESS;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
 
                 // OPÇÃO 4: Servidor remoto
                 // optionsBuilder.UseSqlServer(

@@ -10,7 +10,7 @@ namespace SmartSystemPDV.View.GerenciarPermissoes
     {
         private Dictionary<string, bool> permissoes;
 
-        public GerenciarPermissoesWindow(Usuario usuario)
+        public GerenciarPermissoesWindow()
         {
             InitializeComponent();
             CarregarDados();

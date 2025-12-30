@@ -5,31 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartSystemPDV.View.ControleEstoque"
         mc:Ignorable="d"
-        Title="StockControl" Height="450" Width="800">
+        Title="Controle de Estoque" 
+        Height="700" 
+        Width="1400"
+        MinHeight="600"
+        MinWidth="1200"
+        WindowStartupLocation="CenterScreen">
+
     <Window.Resources>
         <!-- Estilo para TextBox -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <!-- Estilo para ComboBox -->
         <Style x:Key="ModernComboBox" TargetType="ComboBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <!-- Estilo para Label -->
         <Style x:Key="ModernLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Padding" Value="0,0,0,4"/>
         </Style>
 
         <!-- Estilo para botões -->
@@ -37,16 +46,16 @@
             <Setter Property="Background" Value="#1A4D7A"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Height" Value="36"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="5"
+                                CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
@@ -101,49 +110,65 @@
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="SelectionMode" Value="Single"/>
             <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
-            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
             <Setter Property="BorderBrush" Value="#DDDDDD"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="RowHeight" Value="35"/>
+            <Setter Property="RowHeight" Value="32"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EEEEEE"/>
         </Style>
 
         <!-- Estilo para Cards -->
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Padding" Value="16"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.15" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para Cards de Resumo -->
+        <Style x:Key="SummaryCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="16,12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="6" ShadowDepth="1" Opacity="0.12" Color="#000000"/>
                 </Setter.Value>
             </Setter>
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="#F5F7FA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="65"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Cabeçalho -->
         <Border Grid.Row="0" Background="#1A4D7A">
-            <Grid>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+            <Grid Margin="20,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Content="←" 
                             Click="BtnVoltar_Click"
                             Background="Transparent"
                             Foreground="White"
                             BorderThickness="0"
-                            FontSize="24"
+                            FontSize="22"
                             FontWeight="Bold"
                             Cursor="Hand"
-                            Padding="10,0"
+                            Width="40"
+                            Height="40"
                             ToolTip="Voltar">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -151,8 +176,7 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}" 
-                                                    CornerRadius="5"
-                                                    Padding="{TemplateBinding Padding}">
+                                                    CornerRadius="4">
                                                 <ContentPresenter HorizontalAlignment="Center" 
                                                                 VerticalAlignment="Center"/>
                                             </Border>
@@ -161,7 +185,7 @@
                                 </Setter>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#33FFFFFF"/>
+                                        <Setter Property="Background" Value="#2A5D8A"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -169,24 +193,24 @@
                     </Button>
 
                     <TextBlock Text="📊 Controle de Estoque" 
-                               FontSize="24" 
+                               FontSize="22" 
                                FontWeight="Bold" 
                                Foreground="White"
                                VerticalAlignment="Center"
-                               Margin="10,0"/>
+                               Margin="12,0,0,0"/>
                 </StackPanel>
 
                 <TextBlock Text="Usuário: Admin"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
-                           Margin="20,0"
                            Foreground="White"
-                           FontSize="14"/>
+                           FontSize="13"
+                           Opacity="0.9"/>
             </Grid>
         </Border>
 
         <!-- Cards de Resumo -->
-        <Grid Grid.Row="1" Background="#F5F5F5" Margin="15,15,15,0">
+        <Grid Grid.Row="1" Margin="20,16,20,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -195,143 +219,132 @@
             </Grid.ColumnDefinitions>
 
             <!-- Card Total de Produtos -->
-            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,7.5,0">
+            <Border Grid.Column="0" Style="{StaticResource SummaryCardStyle}" Margin="0,0,8,0">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
+                    <StackPanel>
                         <TextBlock Text="Total de Produtos" 
-                                   FontSize="14" 
+                                   FontSize="12" 
                                    Foreground="#666666"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock x:Name="txtTotalProdutos" 
-                                   Text="0" 
-                                   FontSize="32" 
-                                   FontWeight="Bold"
-                                   Foreground="#1A4D7A"/>
+                                   Margin="0,0,0,6"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtTotalProdutos" 
+                                       Text="0" 
+                                       FontSize="28" 
+                                       FontWeight="Bold"
+                                       Foreground="#1A4D7A"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="📦" 
+                                       FontSize="32" 
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.25"/>
+                        </StackPanel>
                     </StackPanel>
-
-                    <TextBlock Grid.Column="1" 
-                               Text="📦" 
-                               FontSize="48" 
-                               VerticalAlignment="Center"
-                               Opacity="0.3"/>
                 </Grid>
             </Border>
 
             <!-- Card Valor Total -->
-            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="7.5,0,7.5,0">
+            <Border Grid.Column="1" Style="{StaticResource SummaryCardStyle}" Margin="8,0,8,0">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
+                    <StackPanel>
                         <TextBlock Text="Valor Total Estoque" 
-                                   FontSize="14" 
+                                   FontSize="12" 
                                    Foreground="#666666"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock x:Name="txtValorTotal" 
-                                   Text="R$ 0,00" 
-                                   FontSize="28" 
-                                   FontWeight="Bold"
-                                   Foreground="#28A745"/>
+                                   Margin="0,0,0,6"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtValorTotal" 
+                                       Text="R$ 0,00" 
+                                       FontSize="24" 
+                                       FontWeight="Bold"
+                                       Foreground="#28A745"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="💰" 
+                                       FontSize="32" 
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.25"/>
+                        </StackPanel>
                     </StackPanel>
-
-                    <TextBlock Grid.Column="1" 
-                               Text="💰" 
-                               FontSize="48" 
-                               VerticalAlignment="Center"
-                               Opacity="0.3"/>
                 </Grid>
             </Border>
 
             <!-- Card Alertas -->
-            <Border Grid.Column="2" Style="{StaticResource CardStyle}" Margin="7.5,0,7.5,0">
+            <Border Grid.Column="2" Style="{StaticResource SummaryCardStyle}" Margin="8,0,8,0">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
+                    <StackPanel>
                         <TextBlock Text="Estoque Baixo" 
-                                   FontSize="14" 
+                                   FontSize="12" 
                                    Foreground="#666666"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock x:Name="txtEstoqueBaixo" 
-                                   Text="0" 
-                                   FontSize="32" 
-                                   FontWeight="Bold"
-                                   Foreground="#DC3545"/>
+                                   Margin="0,0,0,6"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtEstoqueBaixo" 
+                                       Text="0" 
+                                       FontSize="28" 
+                                       FontWeight="Bold"
+                                       Foreground="#DC3545"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="⚠️" 
+                                       FontSize="32" 
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.25"/>
+                        </StackPanel>
                     </StackPanel>
-
-                    <TextBlock Grid.Column="1" 
-                               Text="⚠️" 
-                               FontSize="48" 
-                               VerticalAlignment="Center"
-                               Opacity="0.3"/>
                 </Grid>
             </Border>
 
             <!-- Card Produtos Ativos -->
-            <Border Grid.Column="3" Style="{StaticResource CardStyle}" Margin="7.5,0,0,0">
+            <Border Grid.Column="3" Style="{StaticResource SummaryCardStyle}" Margin="8,0,0,0">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
+                    <StackPanel>
                         <TextBlock Text="Produtos Ativos" 
-                                   FontSize="14" 
+                                   FontSize="12" 
                                    Foreground="#666666"
-                                   Margin="0,0,0,5"/>
-                        <TextBlock x:Name="txtProdutosAtivos" 
-                                   Text="0" 
-                                   FontSize="32" 
-                                   FontWeight="Bold"
-                                   Foreground="#17A2B8"/>
+                                   Margin="0,0,0,6"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtProdutosAtivos" 
+                                       Text="0" 
+                                       FontSize="28" 
+                                       FontWeight="Bold"
+                                       Foreground="#17A2B8"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="✓" 
+                                       FontSize="32" 
+                                       Margin="12,0,0,0"
+                                       VerticalAlignment="Center"
+                                       Opacity="0.25"/>
+                        </StackPanel>
                     </StackPanel>
-
-                    <TextBlock Grid.Column="1" 
-                               Text="✓" 
-                               FontSize="48" 
-                               VerticalAlignment="Center"
-                               Opacity="0.3"/>
                 </Grid>
             </Border>
         </Grid>
 
         <!-- Conteúdo Principal -->
-        <Grid Grid.Row="2" Background="#F5F5F5" Margin="15">
+        <Grid Grid.Row="2" Margin="20,16,20,20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="420"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Painel de Movimentação -->
             <Border Grid.Column="0" 
                     Style="{StaticResource CardStyle}"
-                    Margin="0,0,7.5,0">
+                    Margin="0,0,10,0"
+                    VerticalAlignment="Stretch">
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                         <TextBlock Text="Movimentação de Estoque" 
-                                   FontSize="18" 
+                                   FontSize="16" 
                                    FontWeight="Bold"
                                    Foreground="#1A4D7A"
-                                   Margin="0,0,0,20"/>
+                                   Margin="0,0,0,16"/>
 
                         <!-- Tipo de Movimentação -->
                         <Label Content="Tipo de Movimentação:*" Style="{StaticResource ModernLabel}"/>
                         <ComboBox x:Name="cbTipoMovimentacao" 
                                   Style="{StaticResource ModernComboBox}"
-                                  Margin="0,0,0,15"
+                                  Margin="0,0,0,12"
                                   SelectionChanged="CbTipoMovimentacao_SelectionChanged">
                             <ComboBoxItem Content="Selecione..." IsSelected="True"/>
                             <ComboBoxItem Content="Entrada" Tag="entrada"/>
@@ -345,7 +358,7 @@
                         <Label Content="Produto:*" Style="{StaticResource ModernLabel}"/>
                         <ComboBox x:Name="cbProduto" 
                                   Style="{StaticResource ModernComboBox}"
-                                  Margin="0,0,0,15"
+                                  Margin="0,0,0,12"
                                   SelectionChanged="CbProduto_SelectionChanged">
                             <ComboBoxItem Content="Selecione um produto..." IsSelected="True"/>
                         </ComboBox>
@@ -354,16 +367,16 @@
                         <Label Content="Estoque Atual:" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtEstoqueAtual" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,12"
                                  IsReadOnly="True"
-                                 Background="#F0F0F0"
+                                 Background="#F8F9FA"
                                  Text="0"/>
 
                         <!-- Quantidade -->
                         <Label Content="Quantidade:*" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtQuantidade" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,12"
                                  PreviewTextInput="TextBox_PreviewTextInputNumeric"
                                  TextChanged="TxtQuantidade_TextChanged"/>
 
@@ -371,7 +384,7 @@
                         <Label Content="Novo Estoque:" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtNovoEstoque" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,12"
                                  IsReadOnly="True"
                                  Background="#E8F5E9"
                                  FontWeight="Bold"
@@ -382,40 +395,41 @@
                         <TextBox x:Name="txtMotivo" 
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
-                                 Height="80"
+                                 Height="70"
                                  Padding="10"
-                                 FontSize="14"
+                                 FontSize="13"
                                  BorderBrush="#CCCCCC"
                                  BorderThickness="1"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,12"
                                  VerticalScrollBarVisibility="Auto"/>
 
                         <!-- Data e Hora -->
                         <Label Content="Data/Hora:" Style="{StaticResource ModernLabel}"/>
                         <TextBox x:Name="txtDataHora" 
                                  Style="{StaticResource ModernTextBox}"
-                                 Margin="0,0,0,20"
+                                 Margin="0,0,0,16"
                                  IsReadOnly="True"
-                                 Background="#F0F0F0"/>
+                                 Background="#F8F9FA"/>
 
                         <TextBlock Text="* Campos obrigatórios" 
-                                   FontSize="11"
-                                   Foreground="#666666"
+                                   FontSize="10"
+                                   Foreground="#999999"
                                    FontStyle="Italic"
-                                   Margin="0,0,0,15"/>
+                                   Margin="0,0,0,16"/>
 
                         <!-- Botões de Ação -->
-                        <StackPanel Orientation="Vertical">
+                        <StackPanel>
                             <Button x:Name="btnRegistrar"
                                     Content="✓ Registrar Movimentação"
                                     Style="{StaticResource SuccessButton}"
-                                    Width="250"
+                                    HorizontalAlignment="Stretch"
+                                    Margin="0,0,0,8"
                                     Click="BtnRegistrar_Click"/>
 
                             <Button x:Name="btnLimpar"
-                                    Content="🔄 Limpar"
+                                    Content="🔄 Limpar Formulário"
                                     Style="{StaticResource PrimaryButton}"
-                                    Width="250"
+                                    HorizontalAlignment="Stretch"
                                     Click="BtnLimpar_Click"/>
                         </StackPanel>
                     </StackPanel>
@@ -423,11 +437,11 @@
             </Border>
 
             <!-- Painel de Histórico e Estoque -->
-            <Grid Grid.Column="1" Margin="7.5,0,0,0">
+            <Grid Grid.Column="1" Margin="10,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="10"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="16"/>
+                    <RowDefinition Height="1.2*"/>
                 </Grid.RowDefinitions>
 
                 <!-- Histórico de Movimentações -->
@@ -441,24 +455,24 @@
 
                         <!-- Título -->
                         <TextBlock Grid.Row="0"
-                                   Text="Histórico de Movimentações" 
-                                   FontSize="18" 
+                                   Text="📋 Histórico de Movimentações" 
+                                   FontSize="16" 
                                    FontWeight="Bold"
                                    Foreground="#1A4D7A"
-                                   Margin="0,0,0,15"/>
+                                   Margin="0,0,0,12"/>
 
                         <!-- Filtros -->
-                        <Grid Grid.Row="1" Margin="0,0,0,15">
+                        <Grid Grid.Row="1" Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
 
                             <ComboBox x:Name="cbFiltroTipo"
                                       Grid.Column="0"
                                       Style="{StaticResource ModernComboBox}"
-                                      Margin="0,0,10,0"
+                                      Margin="0,0,8,0"
                                       SelectionChanged="CbFiltroTipo_SelectionChanged">
                                 <ComboBoxItem Content="Todos os Tipos" IsSelected="True"/>
                                 <ComboBoxItem Content="Entrada"/>
@@ -470,15 +484,15 @@
 
                             <DatePicker x:Name="dpDataInicio"
                                        Grid.Column="1"
-                                       Height="35"
-                                       Margin="0,0,10,0"
-                                       Width="150"
+                                       Height="32"
+                                       Margin="0,0,8,0"
+                                       FontSize="12"
                                        SelectedDateChanged="DpData_SelectedDateChanged"/>
 
                             <DatePicker x:Name="dpDataFim"
                                        Grid.Column="2"
-                                       Height="35"
-                                       Width="150"
+                                       Height="32"
+                                       FontSize="12"
                                        SelectedDateChanged="DpData_SelectedDateChanged"/>
                         </Grid>
 
@@ -487,13 +501,13 @@
                                   x:Name="dgHistorico"
                                   Style="{StaticResource ModernDataGrid}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Data/Hora" Binding="{Binding DataHora, StringFormat={}{0:dd/MM/yyyy HH:mm}}" Width="130"/>
-                                <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="100"/>
-                                <DataGridTextColumn Header="Produto" Binding="{Binding NomeProduto}" Width="*"/>
-                                <DataGridTextColumn Header="Qtd Anterior" Binding="{Binding QuantidadeAnterior}" Width="100"/>
-                                <DataGridTextColumn Header="Movimentação" Binding="{Binding Quantidade}" Width="110"/>
-                                <DataGridTextColumn Header="Qtd Final" Binding="{Binding QuantidadeFinal}" Width="90"/>
-                                <DataGridTextColumn Header="Motivo" Binding="{Binding Motivo}" Width="*"/>
+                                <DataGridTextColumn Header="Data/Hora" Binding="{Binding DataHora, StringFormat={}{0:dd/MM/yy HH:mm}}" Width="105"/>
+                                <DataGridTextColumn Header="Tipo" Binding="{Binding Tipo}" Width="85"/>
+                                <DataGridTextColumn Header="Produto" Binding="{Binding NomeProduto}" Width="*" MinWidth="120"/>
+                                <DataGridTextColumn Header="Anterior" Binding="{Binding QuantidadeAnterior}" Width="70"/>
+                                <DataGridTextColumn Header="Movim." Binding="{Binding Quantidade}" Width="65"/>
+                                <DataGridTextColumn Header="Final" Binding="{Binding QuantidadeFinal}" Width="60"/>
+                                <DataGridTextColumn Header="Motivo" Binding="{Binding Motivo}" Width="*" MinWidth="150"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
@@ -511,49 +525,48 @@
 
                         <!-- Título -->
                         <TextBlock Grid.Row="0"
-                                   Text="Situação Atual do Estoque" 
-                                   FontSize="18" 
+                                   Text="📦 Situação Atual do Estoque" 
+                                   FontSize="16" 
                                    FontWeight="Bold"
                                    Foreground="#1A4D7A"
-                                   Margin="0,0,0,15"/>
+                                   Margin="0,0,0,12"/>
 
                         <!-- Pesquisa -->
-                        <Grid Grid.Row="1" Margin="0,0,0,15">
+                        <Grid Grid.Row="1" Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="txtPesquisaEstoque"
-                                     Grid.Column="0"
-                                     Style="{StaticResource ModernTextBox}"
-                                     Margin="0,0,10,0"
-                                     TextChanged="TxtPesquisaEstoque_TextChanged"/>
+                            <Grid Grid.Column="0" Margin="0,0,8,0">
+                                <TextBox x:Name="txtPesquisaEstoque"
+                                         Style="{StaticResource ModernTextBox}"
+                                         TextChanged="TxtPesquisaEstoque_TextChanged"/>
 
-                            <TextBlock Grid.Column="0"
-                                       IsHitTestVisible="False"
-                                       Text="🔍 Pesquisar produto..."
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Left"
-                                       Margin="15,0,0,0"
-                                       Foreground="#999999"
-                                       FontSize="14">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=txtPesquisaEstoque}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                                <TextBlock IsHitTestVisible="False"
+                                           Text="🔍 Pesquisar produto..."
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="12,0,0,0"
+                                           Foreground="#999999"
+                                           FontSize="13">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=txtPesquisaEstoque}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
 
                             <Button Grid.Column="1"
-                                    Content="📊 Atualizar"
+                                    Content="🔄 Atualizar"
                                     Style="{StaticResource InfoButton}"
-                                    Margin="0"
+                                    Width="110"
                                     Click="BtnAtualizar_Click"/>
                         </Grid>
 
@@ -562,14 +575,14 @@
                                   x:Name="dgEstoque"
                                   Style="{StaticResource ModernDataGrid}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="70"/>
-                                <DataGridTextColumn Header="Produto" Binding="{Binding Nome}" Width="*"/>
-                                <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" Width="120"/>
-                                <DataGridTextColumn Header="Estoque" Binding="{Binding Estoque}" Width="80"/>
-                                <DataGridTextColumn Header="Mínimo" Binding="{Binding EstoqueMinimo}" Width="80"/>
-                                <DataGridTextColumn Header="Valor Unit." Binding="{Binding PrecoVenda, StringFormat=C2}" Width="100"/>
-                                <DataGridTextColumn Header="Valor Total" Binding="{Binding ValorTotal, StringFormat=C2}" Width="110"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding StatusEstoque}" Width="100"/>
+                                <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="65"/>
+                                <DataGridTextColumn Header="Produto" Binding="{Binding Nome}" Width="*" MinWidth="150"/>
+                                <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" Width="110"/>
+                                <DataGridTextColumn Header="Estoque" Binding="{Binding Estoque}" Width="70"/>
+                                <DataGridTextColumn Header="Mínimo" Binding="{Binding EstoqueMinimo}" Width="70"/>
+                                <DataGridTextColumn Header="Preço Unit." Binding="{Binding PrecoVenda, StringFormat=C2}" Width="90"/>
+                                <DataGridTextColumn Header="Valor Total" Binding="{Binding ValorTotal, StringFormat=C2}" Width="100"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding StatusEstoque}" Width="75"/>
                             </DataGrid.Columns>
                             <DataGrid.RowStyle>
                                 <Style TargetType="DataGridRow">
@@ -577,6 +590,7 @@
                                         <DataTrigger Binding="{Binding StatusEstoque}" Value="Crítico">
                                             <Setter Property="Background" Value="#FFEBEE"/>
                                             <Setter Property="Foreground" Value="#C62828"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding StatusEstoque}" Value="Baixo">
                                             <Setter Property="Background" Value="#FFF3E0"/>
@@ -595,23 +609,30 @@
                             <Border Background="#FFEBEE" 
                                     Padding="8,4" 
                                     CornerRadius="3"
-                                    Margin="0,0,10,0">
-                                <TextBlock Text="Crítico (0)" 
+                                    BorderBrush="#FFCDD2"
+                                    BorderThickness="1"
+                                    Margin="0,0,8,0">
+                                <TextBlock Text="■ Crítico (0)" 
                                            FontSize="11"
-                                           Foreground="#C62828"/>
+                                           Foreground="#C62828"
+                                           FontWeight="SemiBold"/>
                             </Border>
                             <Border Background="#FFF3E0" 
                                     Padding="8,4" 
                                     CornerRadius="3"
-                                    Margin="0,0,10,0">
-                                <TextBlock Text="Baixo (≤ Mínimo)" 
+                                    BorderBrush="#FFE0B2"
+                                    BorderThickness="1"
+                                    Margin="0,0,8,0">
+                                <TextBlock Text="■ Baixo (≤ Mínimo)" 
                                            FontSize="11"
                                            Foreground="#E65100"/>
                             </Border>
                             <Border Background="#E8F5E9" 
                                     Padding="8,4" 
-                                    CornerRadius="3">
-                                <TextBlock Text="Normal" 
+                                    CornerRadius="3"
+                                    BorderBrush="#C8E6C9"
+                                    BorderThickness="1">
+                                <TextBlock Text="■ Normal" 
                                            FontSize="11"
                                            Foreground="#2E7D32"/>
                             </Border>

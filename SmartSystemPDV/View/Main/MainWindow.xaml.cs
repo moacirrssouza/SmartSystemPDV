@@ -67,8 +67,8 @@ namespace SystemSmartPDV
 
         private void Border_MouseLeftButtonDown_Permissoes(object sender, MouseButtonEventArgs e)
         {
-            //GerenciarPermissoesWindow gerenciarPermissoes = new GerenciarPermissoesWindow();
-           // gerenciarPermissoes.Show();
+            GerenciarPermissoesWindow gerenciarPermissoes = new GerenciarPermissoesWindow();
+            gerenciarPermissoes.Show();
         }
     }
 }

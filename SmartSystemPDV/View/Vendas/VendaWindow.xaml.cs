@@ -68,10 +68,10 @@ namespace SmartSystemPDV.View.Vendas
             }
 
             // Carregar clientes (exemplo)
-            cbCliente.Items.Clear();
-            cbCliente.Items.Add(new ComboBoxItem { Content = "Cliente Padrão", IsSelected = true });
-            cbCliente.Items.Add(new ComboBoxItem { Content = "João Silva - 123.456.789-00" });
-            cbCliente.Items.Add(new ComboBoxItem { Content = "Maria Santos - 987.654.321-00" });
+            //cbCliente.Items.Clear();
+            //cbCliente.Items.Add(new ComboBoxItem { Content = "Cliente Padrão", IsSelected = true });
+            //cbCliente.Items.Add(new ComboBoxItem { Content = "João Silva - 123.456.789-00" });
+            //cbCliente.Items.Add(new ComboBoxItem { Content = "Maria Santos - 987.654.321-00" });
         }
 
         private void ConfigurarEventos()
@@ -126,8 +126,8 @@ namespace SmartSystemPDV.View.Vendas
             // F4 - Cliente
             else if (e.Key == Key.F4)
             {
-                cbCliente.Focus();
-                cbCliente.IsDropDownOpen = true;
+                //cbCliente.Focus();
+                //cbCliente.IsDropDownOpen = true;
             }
         }
 
@@ -480,7 +480,7 @@ namespace SmartSystemPDV.View.Vendas
             txtValorPago.Clear();
             txtTroco.Text = "R$ 0,00";
             cbProduto.SelectedIndex = 0;
-            cbCliente.SelectedIndex = 0;
+            //cbCliente.SelectedIndex = 0;
             cbFormaPagamento.SelectedIndex = 0;
 
             AtualizarTotais();

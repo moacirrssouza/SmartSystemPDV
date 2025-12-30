@@ -5,38 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartSystemPDV.View.Vendas"
         mc:Ignorable="d"
-        Title="PDV - Ponto de Venda" Height="700" Width="1400" WindowState="Maximized">
+        Title="PDV - Ponto de Venda" 
+        Height="750" 
+        Width="1400"
+        MinHeight="700"
+        MinWidth="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+
     <Window.Resources>
         <!-- Estilo para TextBox -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
 
         <!-- Estilo para TextBox Grande -->
         <Style x:Key="LargeTextBox" TargetType="TextBox" BasedOn="{StaticResource ModernTextBox}">
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="Height" Value="45"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Height" Value="42"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
         <!-- Estilo para ComboBox -->
         <Style x:Key="ModernComboBox" TargetType="ComboBox">
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="35"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Estilo para ComboBox Grande -->
+        <Style x:Key="LargeComboBox" TargetType="ComboBox" BasedOn="{StaticResource ModernComboBox}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Height" Value="42"/>
         </Style>
 
         <!-- Estilo para Label -->
         <Style x:Key="ModernLabel" TargetType="Label">
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Padding" Value="0,0,0,4"/>
         </Style>
 
         <!-- Estilo para botões -->
@@ -44,16 +60,16 @@
             <Setter Property="Background" Value="#1A4D7A"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Margin" Value="4"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="5"
+                                CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
@@ -117,24 +133,25 @@
             <Setter Property="IsReadOnly" Value="True"/>
             <Setter Property="SelectionMode" Value="Single"/>
             <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
-            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
             <Setter Property="BorderBrush" Value="#DDDDDD"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="RowHeight" Value="40"/>
+            <Setter Property="RowHeight" Value="36"/>
             <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#EEEEEE"/>
         </Style>
 
         <!-- Estilo para Cards -->
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
-            <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="BorderBrush" Value="#DDDDDD"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Padding" Value="18"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
+                    <DropShadowEffect BlurRadius="8" ShadowDepth="1" Opacity="0.15" Color="#000000"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -143,19 +160,19 @@
         <Style x:Key="NumericButton" TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#333333"/>
-            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderBrush" Value="#DDDDDD"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontSize" Value="22"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Margin" Value="4"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8">
+                                CornerRadius="6">
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
                         </Border>
@@ -164,34 +181,40 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0F0F0"/>
+                    <Setter Property="Background" Value="#F0F8FF"/>
+                    <Setter Property="BorderBrush" Value="#1A4D7A"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#E0E0E0"/>
+                    <Setter Property="Background" Value="#E0F0FF"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="#F5F7FA">
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="65"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Cabeçalho -->
         <Border Grid.Row="0" Background="#1A4D7A">
-            <Grid>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Color="#000000"/>
+            </Border.Effect>
+
+            <Grid Margin="20,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Content="←" 
                             Click="BtnVoltar_Click"
                             Background="Transparent"
                             Foreground="White"
                             BorderThickness="0"
-                            FontSize="24"
+                            FontSize="22"
                             FontWeight="Bold"
                             Cursor="Hand"
-                            Padding="10,0"
+                            Width="40"
+                            Height="40"
                             ToolTip="Voltar">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -199,8 +222,7 @@
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
                                             <Border Background="{TemplateBinding Background}" 
-                                                    CornerRadius="5"
-                                                    Padding="{TemplateBinding Padding}">
+                                                    CornerRadius="4">
                                                 <ContentPresenter HorizontalAlignment="Center" 
                                                                 VerticalAlignment="Center"/>
                                             </Border>
@@ -209,7 +231,7 @@
                                 </Setter>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#33FFFFFF"/>
+                                        <Setter Property="Background" Value="#2A5D8A"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -217,40 +239,62 @@
                     </Button>
 
                     <TextBlock Text="🛒 PDV - Ponto de Venda" 
-                               FontSize="24" 
+                               FontSize="22" 
                                FontWeight="Bold" 
                                Foreground="White"
                                VerticalAlignment="Center"
-                               Margin="10,0"/>
+                               Margin="12,0,0,0"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" 
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           Margin="20,0">
-                    <TextBlock Text="Operador: Admin" 
-                               Foreground="White"
-                               FontSize="14"
-                               VerticalAlignment="Center"
-                               Margin="0,0,20,0"/>
-                    <TextBlock x:Name="txtDataHoraAtual"
-                               Text="29/12/2025 14:30" 
-                               Foreground="White"
-                               FontSize="14"
-                               VerticalAlignment="Center"/>
+                           VerticalAlignment="Center">
+                    <Border Background="#2A5D8A"
+                            CornerRadius="4"
+                            Padding="10,6"
+                            Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👤" 
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,6,0"/>
+                            <TextBlock Text="Operador: Admin" 
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="#2A5D8A"
+                            CornerRadius="4"
+                            Padding="10,6">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🕐" 
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,6,0"/>
+                            <TextBlock x:Name="txtDataHoraAtual"
+                                       Text="29/12/2025 14:30" 
+                                       Foreground="White"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Conteúdo Principal -->
-        <Grid Grid.Row="1" Background="#F5F5F5">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*" MinWidth="450"/>
+                <ColumnDefinition Width="*" MinWidth="750"/>
+                <ColumnDefinition Width="420"/>
             </Grid.ColumnDefinitions>
 
             <!-- Painel Esquerdo - Produtos e Carrinho -->
-            <Grid Grid.Column="0" Margin="15">
+            <Grid Grid.Column="0" Margin="20,20,10,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -258,7 +302,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Busca de Produto -->
-                <Border Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,0,15">
+                <Border Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -266,17 +310,17 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0"
-                                   Text="Adicionar Produto" 
-                                   FontSize="18" 
+                                   Text="🔍 Adicionar Produto" 
+                                   FontSize="16" 
                                    FontWeight="Bold"
                                    Foreground="#1A4D7A"
-                                   Margin="0,0,0,15"/>
+                                   Margin="0,0,0,12"/>
 
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="180"/>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
@@ -293,9 +337,7 @@
                             <StackPanel Grid.Column="1" Margin="0,0,10,0">
                                 <Label Content="Produto:" Style="{StaticResource ModernLabel}"/>
                                 <ComboBox x:Name="cbProduto"
-                                         Style="{StaticResource ModernComboBox}"
-                                         Height="45"
-                                         FontSize="16"
+                                         Style="{StaticResource LargeComboBox}"
                                          SelectionChanged="CbProduto_SelectionChanged">
                                     <ComboBoxItem Content="Selecione ou digite código..." IsSelected="True"/>
                                 </ComboBox>
@@ -312,12 +354,12 @@
 
                             <!-- Botão Adicionar -->
                             <StackPanel Grid.Column="3" VerticalAlignment="Bottom">
-                                <Button Content="+ Adicionar"
+                                <Button Content="➕ Adicionar"
                                        Style="{StaticResource SuccessButton}"
-                                       Height="45"
-                                       Width="150"
+                                       Height="42"
+                                       Width="140"
                                        Margin="0"
-                                       FontSize="16"
+                                       FontSize="14"
                                        Click="BtnAdicionar_Click"/>
                             </StackPanel>
                         </Grid>
@@ -332,20 +374,22 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" Margin="0,0,0,15">
-                            <TextBlock Text="Itens da Venda" 
-                                      FontSize="18" 
+                        <Grid Grid.Row="0" Margin="0,0,0,12">
+                            <TextBlock Text="🛒 Itens da Venda" 
+                                      FontSize="16" 
                                       FontWeight="Bold"
                                       Foreground="#1A4D7A"
                                       VerticalAlignment="Center"/>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="✏️ Editar Item"
+                                <Button Content="✏️ Editar"
                                        Style="{StaticResource InfoButton}"
-                                       Margin="0,0,10,0"
+                                       Width="100"
+                                       Margin="0,0,8,0"
                                        Click="BtnEditarItem_Click"/>
-                                <Button Content="🗑️ Remover Item"
+                                <Button Content="🗑️ Remover"
                                        Style="{StaticResource DangerButton}"
+                                       Width="100"
                                        Margin="0"
                                        Click="BtnRemoverItem_Click"/>
                             </StackPanel>
@@ -356,19 +400,19 @@
                                  x:Name="dgCarrinho"
                                  Style="{StaticResource ModernDataGrid}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="80"/>
-                                <DataGridTextColumn Header="Produto" Binding="{Binding Nome}" Width="*"/>
-                                <DataGridTextColumn Header="Qtd" Binding="{Binding Quantidade}" Width="70"/>
-                                <DataGridTextColumn Header="Preço Unit." Binding="{Binding PrecoUnitario, StringFormat=C2}" Width="110"/>
-                                <DataGridTextColumn Header="Desconto" Binding="{Binding Desconto, StringFormat=C2}" Width="100"/>
-                                <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal, StringFormat=C2}" Width="120"/>
+                                <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="75"/>
+                                <DataGridTextColumn Header="Produto" Binding="{Binding Nome}" Width="*" MinWidth="200"/>
+                                <DataGridTextColumn Header="Qtd" Binding="{Binding Quantidade}" Width="60"/>
+                                <DataGridTextColumn Header="Preço Unit." Binding="{Binding PrecoUnitario, StringFormat=C2}" Width="100"/>
+                                <DataGridTextColumn Header="Desconto" Binding="{Binding Desconto, StringFormat=C2}" Width="95"/>
+                                <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal, StringFormat=C2}" Width="110"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                 </Border>
 
                 <!-- Resumo Rápido -->
-                <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,15,0,0">
+                <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,16,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -376,100 +420,85 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0">
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
                             <TextBlock Text="Itens no Carrinho" 
-                                      FontSize="12" 
+                                      FontSize="11" 
                                       Foreground="#666666"
-                                      Margin="0,0,0,5"/>
-                            <TextBlock x:Name="txtTotalItens"
-                                      Text="0" 
-                                      FontSize="24" 
-                                      FontWeight="Bold"
-                                      Foreground="#1A4D7A"/>
+                                      TextAlignment="Center"
+                                      Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="📦" FontSize="20" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
+                                <TextBlock x:Name="txtTotalItens"
+                                          Text="0" 
+                                          FontSize="28" 
+                                          FontWeight="Bold"
+                                          Foreground="#1A4D7A"/>
+                            </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="1">
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
                             <TextBlock Text="Desconto Total" 
-                                      FontSize="12" 
+                                      FontSize="11" 
                                       Foreground="#666666"
-                                      Margin="0,0,0,5"/>
-                            <TextBlock x:Name="txtDescontoTotal"
-                                      Text="R$ 0,00" 
-                                      FontSize="24" 
-                                      FontWeight="Bold"
-                                      Foreground="#FFC107"/>
+                                      TextAlignment="Center"
+                                      Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="🏷️" FontSize="20" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
+                                <TextBlock x:Name="txtDescontoTotal"
+                                          Text="R$ 0,00" 
+                                          FontSize="24" 
+                                          FontWeight="Bold"
+                                          Foreground="#FFC107"/>
+                            </StackPanel>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="2">
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
                             <TextBlock Text="Total da Venda" 
-                                      FontSize="12" 
+                                      FontSize="11" 
                                       Foreground="#666666"
-                                      Margin="0,0,0,5"/>
-                            <TextBlock x:Name="txtTotalVenda"
-                                      Text="R$ 0,00" 
-                                      FontSize="28" 
-                                      FontWeight="Bold"
-                                      Foreground="#28A745"/>
+                                      TextAlignment="Center"
+                                      Margin="0,0,0,6"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="💰" FontSize="22" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
+                                <TextBlock x:Name="txtTotalVenda"
+                                          Text="R$ 0,00" 
+                                          FontSize="32" 
+                                          FontWeight="Bold"
+                                          Foreground="#28A745"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                 </Border>
             </Grid>
 
             <!-- Painel Direito - Pagamento e Ações -->
-            <Grid Grid.Column="1" Margin="0,15,15,15">
+            <Grid Grid.Column="1" Margin="10,20,20,20">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Dados do Cliente -->
-                <Border Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,0,15">
-                    <StackPanel>
-                        <TextBlock Text="Cliente" 
-                                  FontSize="18" 
-                                  FontWeight="Bold"
-                                  Foreground="#1A4D7A"
-                                  Margin="0,0,0,15"/>
-
-                        <Label Content="Nome/CPF:" Style="{StaticResource ModernLabel}"/>
-                        <ComboBox x:Name="cbCliente"
-                                 Style="{StaticResource ModernComboBox}"
-                                 Margin="0,0,0,10"
-                                 IsEditable="True">
-                            <ComboBoxItem Content="Cliente Padrão" IsSelected="True"/>
-                        </ComboBox>
-
-                        <Button Content="+ Novo Cliente"
-                               Style="{StaticResource InfoButton}"
-                               Margin="0"
-                               Width="150"
-                               HorizontalAlignment="Left"
-                               Click="BtnNovoCliente_Click"/>
-                    </StackPanel>
-                </Border>
-
                 <!-- Forma de Pagamento -->
-                <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,15">
+                <Border Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <StackPanel>
-                        <TextBlock Text="Forma de Pagamento" 
-                                  FontSize="18" 
+                        <TextBlock Text="💳 Forma de Pagamento" 
+                                  FontSize="16" 
                                   FontWeight="Bold"
                                   Foreground="#1A4D7A"
-                                  Margin="0,0,0,15"/>
+                                  Margin="0,0,0,12"/>
 
                         <Label Content="Método:" Style="{StaticResource ModernLabel}"/>
                         <ComboBox x:Name="cbFormaPagamento"
                                  Style="{StaticResource ModernComboBox}"
-                                 Margin="0,0,0,15"
+                                 Margin="0,0,0,12"
                                  SelectionChanged="CbFormaPagamento_SelectionChanged">
-                            <ComboBoxItem Content="Dinheiro" IsSelected="True"/>
-                            <ComboBoxItem Content="Cartão de Débito"/>
-                            <ComboBoxItem Content="Cartão de Crédito"/>
-                            <ComboBoxItem Content="PIX"/>
-                            <ComboBoxItem Content="Boleto"/>
-                            <ComboBoxItem Content="Crediário"/>
+                            <ComboBoxItem Content="💵 Dinheiro" IsSelected="True"/>
+                            <ComboBoxItem Content="💳 Cartão de Débito"/>
+                            <ComboBoxItem Content="💳 Cartão de Crédito"/>
+                            <ComboBoxItem Content="📱 PIX"/>
+                            <ComboBoxItem Content="📄 Boleto"/>
+                            <ComboBoxItem Content="📝 Crediário"/>
                         </ComboBox>
 
                         <!-- Valor Pago (para Dinheiro) -->
@@ -487,6 +516,7 @@
                                     IsReadOnly="True"
                                     Background="#E8F5E9"
                                     Text="R$ 0,00"
+                                    FontSize="18"
                                     FontWeight="Bold"
                                     Foreground="#28A745"/>
                         </StackPanel>
@@ -496,6 +526,7 @@
                             <Label Content="Parcelas:" Style="{StaticResource ModernLabel}"/>
                             <ComboBox x:Name="cbParcelas"
                                      Style="{StaticResource ModernComboBox}"
+                                     Margin="0,0,0,10"
                                      SelectionChanged="CbParcelas_SelectionChanged">
                                 <ComboBoxItem Content="1x sem juros" IsSelected="True"/>
                                 <ComboBoxItem Content="2x sem juros"/>
@@ -505,18 +536,19 @@
                                 <ComboBoxItem Content="6x com juros"/>
                             </ComboBox>
 
-                            <Label Content="Valor da Parcela:" Style="{StaticResource ModernLabel}" Margin="0,10,0,0"/>
+                            <Label Content="Valor da Parcela:" Style="{StaticResource ModernLabel}"/>
                             <TextBox x:Name="txtValorParcela"
                                     Style="{StaticResource ModernTextBox}"
                                     IsReadOnly="True"
-                                    Background="#F0F0F0"
+                                    Background="#F8F9FA"
+                                    FontWeight="SemiBold"
                                     Text="R$ 0,00"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
 
                 <!-- Teclado Numérico -->
-                <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,0,0,15">
+                <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -524,11 +556,11 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0"
-                                  Text="Teclado Numérico" 
-                                  FontSize="16" 
+                                  Text="⌨️ Teclado Numérico" 
+                                  FontSize="14" 
                                   FontWeight="Bold"
                                   Foreground="#1A4D7A"
-                                  Margin="0,0,0,15"/>
+                                  Margin="0,0,0,12"/>
 
                         <Grid Grid.Row="1">
                             <Grid.RowDefinitions>
@@ -561,18 +593,18 @@
                             <!-- Linha 4 -->
                             <Button Grid.Row="3" Grid.Column="0" Content="," Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="3" Grid.Column="1" Content="0" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="3" Grid.Column="2" Content="⌫" Style="{StaticResource NumericButton}" Click="BtnBackspace_Click" FontSize="20"/>
+                            <Button Grid.Row="3" Grid.Column="2" Content="⌫" Style="{StaticResource NumericButton}" Click="BtnBackspace_Click" FontSize="18"/>
                         </Grid>
                     </Grid>
                 </Border>
 
                 <!-- Botões de Ação -->
-                <Border Grid.Row="3" Style="{StaticResource CardStyle}">
+                <Border Grid.Row="2" Style="{StaticResource CardStyle}">
                     <StackPanel>
-                        <Button Content="💰 FINALIZAR VENDA (F2)"
+                        <Button Content="✅ FINALIZAR VENDA (F2)"
                                Style="{StaticResource SuccessButton}"
-                               Height="60"
-                               FontSize="18"
+                               Height="56"
+                               FontSize="16"
                                Margin="0,0,0,10"
                                Click="BtnFinalizarVenda_Click"/>
 
@@ -583,16 +615,16 @@
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0"
-                                   Content="🗑️ Cancelar"
+                                   Content="❌ Cancelar"
                                    Style="{StaticResource DangerButton}"
-                                   Height="45"
+                                   Height="40"
                                    Margin="0,0,5,0"
                                    Click="BtnCancelarVenda_Click"/>
 
                             <Button Grid.Column="1"
                                    Content="💾 Suspender"
                                    Style="{StaticResource WarningButton}"
-                                   Height="45"
+                                   Height="40"
                                    Margin="5,0,0,0"
                                    Click="BtnSuspenderVenda_Click"/>
                         </Grid>
