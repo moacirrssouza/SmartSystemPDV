@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "tvts1YB57/0=",
+  "dgSpecHash": "uXXpzkjqsbM=",
   "success": true,
-  "projectFilePath": "C:\\Projetos\\SmartSystemPDV-Adega.git\\SmartSystemPDV\\SmartSystemPDV\\SmartSystemPDV.csproj",
+  "projectFilePath": "C:\\Projetos\\SmartSystemPDV\\SmartSystemPDV\\SmartSystemPDV.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MoacirSouza\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\MoacirSouza\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
