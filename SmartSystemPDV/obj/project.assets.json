@@ -4219,11 +4219,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projetos\\SmartSystemPDV-Adega.git\\SmartSystemPDV\\SmartSystemPDV\\SmartSystemPDV.csproj",
+      "projectUniqueName": "C:\\Projetos\\SmartSystemPDV\\SmartSystemPDV\\SmartSystemPDV.csproj",
       "projectName": "SmartSystemPDV",
-      "projectPath": "C:\\Projetos\\SmartSystemPDV-Adega.git\\SmartSystemPDV\\SmartSystemPDV\\SmartSystemPDV.csproj",
+      "projectPath": "C:\\Projetos\\SmartSystemPDV\\SmartSystemPDV\\SmartSystemPDV.csproj",
       "packagesPath": "C:\\Users\\MoacirSouza\\.nuget\\packages\\",
-      "outputPath": "C:\\Projetos\\SmartSystemPDV-Adega.git\\SmartSystemPDV\\SmartSystemPDV\\obj\\",
+      "outputPath": "C:\\Projetos\\SmartSystemPDV\\SmartSystemPDV\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

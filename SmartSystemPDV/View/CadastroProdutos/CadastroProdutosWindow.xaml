@@ -112,6 +112,49 @@
             </Style.Triggers>
         </Style>
 
+        <!-- Estilo para botões de paginação -->
+        <Style x:Key="PaginationButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#1A4D7A"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E8F4F8"/>
+                    <Setter Property="BorderBrush" Value="#1A4D7A"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#F5F5F5"/>
+                    <Setter Property="Foreground" Value="#CCCCCC"/>
+                    <Setter Property="Cursor" Value="Arrow"/>
+                </Trigger>
+                <Trigger Property="Tag" Value="Active">
+                    <Setter Property="Background" Value="#1A4D7A"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderBrush" Value="#1A4D7A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Estilo para DataGrid -->
         <Style x:Key="ModernDataGrid" TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False"/>
@@ -364,7 +407,7 @@
                                     Content="🆕 Novo Produto"
                                     Style="{StaticResource PrimaryButton}"
                                     HorizontalAlignment="Stretch"
-                                    Margin="0,0,0,0"
+                                    Margin="0,0,0,5"
                                     Click="BtnNovo_Click"/>
 
                             <Grid Margin="0,0,0,0">
@@ -407,13 +450,34 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Título -->
-                    <TextBlock Grid.Row="0"
-                               Text="📋 Lista de Produtos Cadastrados" 
-                               FontSize="16" 
-                               FontWeight="Bold"
-                               Foreground="#1A4D7A"
-                               Margin="0,0,0,16"/>
+                    <!-- Título e Itens por Página -->
+                    <Grid Grid.Row="0" Margin="0,0,0,16">
+                        <TextBlock Text="📋 Lista de Produtos Cadastrados" 
+                                   FontSize="16" 
+                                   FontWeight="Bold"
+                                   Foreground="#1A4D7A"
+                                   VerticalAlignment="Center"/>
+
+                        <StackPanel Orientation="Horizontal" 
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center">
+                            <TextBlock Text="Itens por página:" 
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"
+                                       FontSize="12"
+                                       Foreground="#666666"/>
+                            <ComboBox x:Name="cbItensPorPagina"
+                                     Width="70"
+                                     Height="28"
+                                     FontSize="12"
+                                     SelectionChanged="CbItensPorPagina_SelectionChanged">
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20" IsSelected="True"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="100"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
 
                     <!-- Barra de Pesquisa -->
                     <Grid Grid.Row="1" Margin="0,0,0,12">
@@ -486,36 +550,113 @@
                         </DataGrid.RowStyle>
                     </DataGrid>
 
-                    <!-- Rodapé com ações -->
+                    <!-- Rodapé com Paginação e Ações -->
                     <Grid Grid.Row="3" Margin="0,12,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Column="0"
-                                   x:Name="txtTotalProdutos"
-                                   Text="Total: 0 produto(s)"
-                                   VerticalAlignment="Center"
-                                   FontSize="12"
-                                   Foreground="#666666"/>
+                        <!-- Paginação -->
+                        <Border Grid.Row="0"
+                                Background="#F8F9FA"
+                                CornerRadius="6"
+                                Padding="12,8"
+                                BorderBrush="#E0E0E0"
+                                BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="2" 
-                                   Orientation="Horizontal" 
-                                   HorizontalAlignment="Right">
-                            <Button x:Name="btnEditar"
-                                    Content="✏ Editar"
-                                    Style="{StaticResource WarningButton}"
-                                    Click="BtnEditar_Click"
-                                    IsEnabled="False"/>
+                                <!-- Informações de Página -->
+                                <StackPanel Grid.Column="0" 
+                                           Orientation="Horizontal"
+                                           VerticalAlignment="Center">
+                                    <TextBlock x:Name="txtInfoPaginacao"
+                                               Text="Exibindo 1-20 de 100 produtos"
+                                               FontSize="12"
+                                               Foreground="#666666"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
 
-                            <Button x:Name="btnExcluir"
-                                    Content="🗑 Excluir"
-                                    Style="{StaticResource DangerButton}"
-                                    Click="BtnExcluir_Click"
-                                    IsEnabled="False"/>
-                        </StackPanel>
+                                <!-- Controles de Paginação -->
+                                <StackPanel Grid.Column="2"
+                                           Orientation="Horizontal"
+                                           HorizontalAlignment="Right">
+
+                                    <!-- Primeira Página -->
+                                    <Button x:Name="btnPrimeiraPagina"
+                                            Content="⏮"
+                                            Style="{StaticResource PaginationButton}"
+                                            Click="BtnPrimeiraPagina_Click"
+                                            ToolTip="Primeira página"/>
+
+                                    <!-- Página Anterior -->
+                                    <Button x:Name="btnPaginaAnterior"
+                                            Content="◀"
+                                            Style="{StaticResource PaginationButton}"
+                                            Click="BtnPaginaAnterior_Click"
+                                            ToolTip="Página anterior"/>
+
+                                    <!-- Números de Página -->
+                                    <StackPanel x:Name="pnlNumerosPagina"
+                                               Orientation="Horizontal"
+                                               Margin="4,0">
+                                        <!-- Gerado dinamicamente no code-behind -->
+                                    </StackPanel>
+
+                                    <!-- Próxima Página -->
+                                    <Button x:Name="btnProximaPagina"
+                                            Content="▶"
+                                            Style="{StaticResource PaginationButton}"
+                                            Click="BtnProximaPagina_Click"
+                                            ToolTip="Próxima página"/>
+
+                                    <!-- Última Página -->
+                                    <Button x:Name="btnUltimaPagina"
+                                            Content="⏭"
+                                            Style="{StaticResource PaginationButton}"
+                                            Click="BtnUltimaPagina_Click"
+                                            ToolTip="Última página"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Ações (Editar/Excluir) -->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       x:Name="txtTotalProdutos"
+                                       Text="Total: 0 produto(s)"
+                                       VerticalAlignment="Center"
+                                       FontSize="12"
+                                       Foreground="#666666"/>
+
+                            <StackPanel Grid.Column="2" 
+                                       Orientation="Horizontal" 
+                                       HorizontalAlignment="Right">
+                                <Button x:Name="btnEditar"
+                                        Content="✏ Editar"
+                                        Style="{StaticResource WarningButton}"
+                                        Click="BtnEditar_Click"
+                                        IsEnabled="False"/>
+
+                                <Button x:Name="btnExcluir"
+                                        Content="🗑 Excluir"
+                                        Style="{StaticResource DangerButton}"
+                                        Click="BtnExcluir_Click"
+                                        IsEnabled="False"/>
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Border>

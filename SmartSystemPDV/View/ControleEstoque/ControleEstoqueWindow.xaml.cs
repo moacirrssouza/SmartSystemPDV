@@ -492,17 +492,7 @@ public partial class ControleEstoqueWindow : Window
 
     private void BtnVoltar_Click(object sender, RoutedEventArgs e)
     {
-        var result = MessageBox.Show(
-            "Deseja voltar para a tela principal?",
-            "Confirmar",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Question
-        );
-
-        if (result == MessageBoxResult.Yes)
-        {
-            this.Close();
-        }
+        this.Close();
     }
 }
 
