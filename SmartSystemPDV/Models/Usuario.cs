@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartSystemPDV.Models;
 
@@ -30,7 +30,19 @@ public class Usuario
     [MaxLength(50)]
     public string Perfil { get; set; }
 
+    [MaxLength(50)]
+    public string Cargo { get; set; }
+
+    [MaxLength(50)]
+    public string Departamento { get; set; }
+
+    [MaxLength(20)]
+    public string Telefone { get; set; }
+
     public bool Ativo { get; set; }
+
+    [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+    public string StatusTexto => Ativo ? "Ativo" : "Inativo";
 
     public DateTime DataCadastro { get; set; }
 }

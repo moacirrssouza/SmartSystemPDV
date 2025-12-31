@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmartSystemPDV.Models
@@ -69,5 +69,22 @@ namespace SmartSystemPDV.Models
         public bool Ativo { get; set; } = true;
 
         public ICollection<Categoria> Categorias { get; set; }
+
+        [NotMapped]
+        public decimal ValorTotal => Estoque * PrecoVenda;
+
+        [NotMapped]
+        public string StatusEstoque
+        {
+            get
+            {
+                if (Estoque <= 0) return "Crítico";
+                if (Estoque <= EstoqueMinimo) return "Baixo";
+                return "Normal";
+            }
+        }
+
+        [NotMapped]
+        public string NomeCompleto => $"{Codigo} - {Nome}";
     }
 }

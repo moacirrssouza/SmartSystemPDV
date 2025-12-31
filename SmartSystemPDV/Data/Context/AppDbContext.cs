@@ -41,7 +41,7 @@ public class AppDbContext : DbContext
 
             // OPÇÃO 3: SQL Server Express com nome da instância
             optionsBuilder.UseSqlServer(
-                "Server=.\\SQLEXPRESS;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
+                "Server=localhost\\SQLEXPRESS;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;Connection Timeout=60;");
 
             // OPÇÃO 4: Servidor remoto
             // optionsBuilder.UseSqlServer(

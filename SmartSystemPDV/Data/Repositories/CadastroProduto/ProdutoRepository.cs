@@ -1,4 +1,4 @@
-﻿using SmartSystemPDV.Data.Context;
+using SmartSystemPDV.Data.Context;
 using SmartSystemPDV.Data.Repositories;
 using SmartSystemPDV.Data.Repositories.CadastroProduto;
 using SmartSystemPDV.Models;
@@ -72,10 +72,10 @@ public class ProdutoRepository : Repository<Produto>, IProdutoRepository
         termo = termo.ToLower().Trim();
 
         return await _dbSet
-            .Include(p => p.Categoria)
+            .Include(p => p.CategoriaNavigation)
             .Where(p => p.Ativo && (
                 p.Codigo.ToString().Contains(termo) ||
-                p.CodigoBarras.ToLower().Contains(termo) ||
+                (p.CodigoBarras != null && p.CodigoBarras.ToLower().Contains(termo)) ||
                 p.Nome.ToLower().Contains(termo)
             ))
             .OrderBy(p => p.Nome)
@@ -86,7 +86,7 @@ public class ProdutoRepository : Repository<Produto>, IProdutoRepository
     public async Task<IEnumerable<Produto>> GetProdutosBaixoEstoqueAsync()
     {
         return await _dbSet
-            .Include(p => p.Categoria)
+            .Include(p => p.CategoriaNavigation)
             .Where(p => p.Ativo && p.EstoqueAtual <= p.EstoqueMinimo)
             .OrderBy(p => p.EstoqueAtual)
             .ToListAsync();

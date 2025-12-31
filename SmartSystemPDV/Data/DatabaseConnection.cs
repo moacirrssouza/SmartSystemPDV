@@ -6,12 +6,19 @@ namespace SmartSystemPDV.Data
 {
     public class DatabaseConnection
     {
+        #region Campos Privados
+
         private readonly string _connectionString;
+
+        #endregion
+
+        #region Construtores
 
         public DatabaseConnection(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' não encontrada.");
+                ?? throw new InvalidOperationException(
+                    "Connection string 'DefaultConnection' não encontrada.");
         }
 
         public DatabaseConnection(string connectionString)
@@ -19,26 +26,33 @@ namespace SmartSystemPDV.Data
             _connectionString = connectionString;
         }
 
+        #endregion
+
+        #region Conexão
+
         public IDbConnection CreateConnection()
         {
             return new SqlConnection(_connectionString);
         }
 
-        // Método para testar a conexão
+        #endregion
+
+        #region Testes
+
         public bool TestarConexao()
         {
             try
             {
-                using (var connection = CreateConnection())
-                {
-                    connection.Open();
-                    return true;
-                }
+                using var connection = CreateConnection();
+                connection.Open();
+                return true;
             }
-            catch (Exception)
+            catch
             {
                 return false;
             }
         }
+
+        #endregion
     }
 }

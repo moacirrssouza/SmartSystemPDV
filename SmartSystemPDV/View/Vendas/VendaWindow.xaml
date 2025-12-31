@@ -1,10 +1,11 @@
-﻿<Window x:Class="SmartSystemPDV.View.Vendas.VendaWindow"
+<Window x:Class="SmartSystemPDV.View.Vendas.VendaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartSystemPDV.View.Vendas"
         xmlns:controls="clr-namespace:SmartSystemPDV.Controls"
+        xmlns:viewmodels="clr-namespace:SmartSystemPDV.ViewModels"
         mc:Ignorable="d"
         Title="PDV - Ponto de Venda" 
         Height="750" 
@@ -13,7 +14,12 @@
         MinWidth="1300"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Loaded="Window_Loaded">
+        d:DataContext="{d:DesignInstance Type=viewmodels:VendaViewModel}">
+
+    <Window.InputBindings>
+        <KeyBinding Key="F2" Command="{Binding FinalizarVendaCommand}"/>
+        <KeyBinding Key="Esc" Command="{Binding CancelarVendaCommand}"/>
+    </Window.InputBindings>
 
     <Window.Resources>
         <!-- Estilos Base -->
@@ -208,7 +214,7 @@
             <Grid Margin="20,0">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Content="←" 
-                            Click="BtnVoltar_Click"
+                            Command="{Binding VoltarCommand}"
                             Background="Transparent"
                             Foreground="White"
                             BorderThickness="0"
@@ -277,7 +283,7 @@
                                        VerticalAlignment="Center"
                                        Margin="0,0,6,0"/>
                             <TextBlock x:Name="txtDataHoraAtual"
-                                       Text="29/12/2025 14:30" 
+                                       Text="{Binding DataHoraAtual}" 
                                        Foreground="White"
                                        FontSize="12"
                                        FontWeight="SemiBold"
@@ -331,7 +337,11 @@
                                 <Label Content="Código/Barras:" Style="{StaticResource ModernLabel}"/>
                                 <TextBox x:Name="txtCodigoProduto"
                                         Style="{StaticResource LargeTextBox}"
-                                        KeyDown="TxtCodigoProduto_KeyDown"/>
+                                        Text="{Binding CodigoProdutoBusca, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBox.InputBindings>
+                                        <KeyBinding Key="Enter" Command="{Binding BuscarProdutoCommand}"/>
+                                    </TextBox.InputBindings>
+                                </TextBox>
                             </StackPanel>
 
                             <!-- Produto com Busca -->
@@ -340,7 +350,9 @@
                                 <controls:SearchableComboBox x:Name="cbProduto"
                                                             Height="42"
                                                             Placeholder="Digite para buscar produto..."
-                                                            SelectionChanged="CbProduto_SelectionChanged"/>
+                                                            ItemsSource="{Binding Produtos}"
+                                                            SelectedItem="{Binding ProdutoSelecionado}"
+                                                            DisplayMemberPath="NomeCompleto"/>
                             </StackPanel>
 
                             <!-- Quantidade -->
@@ -348,8 +360,7 @@
                                 <Label Content="Quantidade:" Style="{StaticResource ModernLabel}"/>
                                 <TextBox x:Name="txtQuantidadeProduto"
                                         Style="{StaticResource LargeTextBox}"
-                                        Text="1"
-                                        PreviewTextInput="TextBox_PreviewTextInputDecimal"/>
+                                        Text="{Binding QuantidadeProduto, UpdateSourceTrigger=PropertyChanged}"/>
                             </StackPanel>
 
                             <!-- Botão Adicionar -->
@@ -360,7 +371,7 @@
                                        Width="140"
                                        Margin="0"
                                        FontSize="14"
-                                       Click="BtnAdicionar_Click"/>
+                                       Command="{Binding AdicionarProdutoCommand}"/>
                             </StackPanel>
                         </Grid>
                     </Grid>
@@ -386,18 +397,20 @@
                                        Style="{StaticResource InfoButton}"
                                        Width="100"
                                        Margin="0,0,8,0"
-                                       Click="BtnEditarItem_Click"/>
+                                       Command="{Binding EditarItemCommand}"/>
                                 <Button Content="🗑️ Remover"
                                        Style="{StaticResource DangerButton}"
                                        Width="100"
                                        Margin="0"
-                                       Click="BtnRemoverItem_Click"/>
+                                       Command="{Binding RemoverItemCommand}"/>
                             </StackPanel>
                         </Grid>
 
                         <DataGrid Grid.Row="1"
                                  x:Name="dgCarrinho"
-                                 Style="{StaticResource ModernDataGrid}">
+                                 Style="{StaticResource ModernDataGrid}"
+                                 ItemsSource="{Binding ItensCarrinho}"
+                                 SelectedItem="{Binding ItemSelecionado}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Código" Binding="{Binding ProdutoCodigo}" Width="75"/>
                                 <DataGridTextColumn Header="Produto" Binding="{Binding ProdutoNome}" Width="*" MinWidth="200"/>
@@ -428,7 +441,7 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="📦" FontSize="20" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
                                 <TextBlock x:Name="txtTotalItens"
-                                          Text="0" 
+                                          Text="{Binding TotalItens}" 
                                           FontSize="28" 
                                           FontWeight="Bold"
                                           Foreground="#1A4D7A"/>
@@ -444,7 +457,7 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="🏷️" FontSize="20" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
                                 <TextBlock x:Name="txtDescontoTotal"
-                                          Text="R$ 0,00" 
+                                          Text="{Binding DescontoTotal}" 
                                           FontSize="24" 
                                           FontWeight="Bold"
                                           Foreground="#FFC107"/>
@@ -460,7 +473,7 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <TextBlock Text="💰" FontSize="22" VerticalAlignment="Center" Margin="0,0,8,0" Opacity="0.5"/>
                                 <TextBlock x:Name="txtTotalVenda"
-                                          Text="R$ 0,00" 
+                                          Text="{Binding TotalVenda}" 
                                           FontSize="32" 
                                           FontWeight="Bold"
                                           Foreground="#28A745"/>
@@ -491,7 +504,9 @@
                         <controls:SearchableComboBox x:Name="cbCliente"
                                                     Height="42"
                                                     Placeholder="Selecione o cliente..."
-                                                    SelectionChanged="CbCliente_SelectionChanged"/>
+                                                    ItemsSource="{Binding Clientes}"
+                                                    SelectedItem="{Binding ClienteSelecionado}"
+                                                    DisplayMemberPath="Nome"/>
                     </StackPanel>
                 </Border>
 
@@ -508,36 +523,39 @@
                                                     Height="42"
                                                     Margin="0,0,0,12"
                                                     Placeholder="Selecione forma de pagamento..."
-                                                    SelectionChanged="CbFormaPagamento_SelectionChanged"/>
+                                                    ItemsSource="{Binding FormasPagamento}"
+                                                    SelectedItem="{Binding FormaPagamentoSelecionada}"
+                                                    DisplayMemberPath="Nome"/>
 
                         <!-- Painel Dinheiro -->
-                        <StackPanel x:Name="pnlDinheiro" Visibility="Collapsed">
+                        <StackPanel x:Name="pnlDinheiro" Visibility="{Binding PnlDinheiroVisibility}">
                             <Label Content="Valor Pago:" Style="{StaticResource ModernLabel}"/>
                             <TextBox x:Name="txtValorPago"
                                     Style="{StaticResource LargeTextBox}"
                                     Margin="0,0,0,10"
-                                    TextChanged="TxtValorPago_TextChanged"
-                                    PreviewTextInput="TextBox_PreviewTextInputDecimal"/>
+                                    Text="{Binding ValorPago, UpdateSourceTrigger=PropertyChanged}"/>
 
                             <Label Content="Troco:" Style="{StaticResource ModernLabel}"/>
                             <TextBox x:Name="txtTroco"
                                     Style="{StaticResource LargeTextBox}"
                                     IsReadOnly="True"
                                     Background="#E8F5E9"
-                                    Text="R$ 0,00"
+                                    Text="{Binding Troco}"
                                     FontSize="18"
                                     FontWeight="Bold"
                                     Foreground="#28A745"/>
                         </StackPanel>
 
                         <!-- Painel Parcelas -->
-                        <StackPanel x:Name="pnlParcelas" Visibility="Collapsed">
+                        <StackPanel x:Name="pnlParcelas" Visibility="{Binding PnlParcelasVisibility}">
                             <Label Content="Parcelas:" Style="{StaticResource ModernLabel}"/>
                             <controls:SearchableComboBox x:Name="cbParcelas"
                                                         Height="42"
                                                         Margin="0,0,0,10"
                                                         Placeholder="Selecione parcelas..."
-                                                        SelectionChanged="CbParcelas_SelectionChanged"/>
+                                                        ItemsSource="{Binding Parcelas}"
+                                                        SelectedItem="{Binding ParcelaSelecionada}"
+                                                        DisplayMemberPath="Descricao"/>
 
                             <Label Content="Valor da Parcela:" Style="{StaticResource ModernLabel}"/>
                             <TextBox x:Name="txtValorParcela"
@@ -545,7 +563,7 @@
                                     IsReadOnly="True"
                                     Background="#F8F9FA"
                                     FontWeight="SemiBold"
-                                    Text="R$ 0,00"/>
+                                    Text="{Binding ValorParcela}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -578,21 +596,21 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Row="0" Grid.Column="0" Content="7" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="0" Grid.Column="1" Content="8" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="0" Grid.Column="2" Content="9" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
+                            <Button Grid.Row="0" Grid.Column="0" Content="7" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="7"/>
+                            <Button Grid.Row="0" Grid.Column="1" Content="8" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="8"/>
+                            <Button Grid.Row="0" Grid.Column="2" Content="9" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="9"/>
 
-                            <Button Grid.Row="1" Grid.Column="0" Content="4" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="1" Grid.Column="1" Content="5" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="1" Grid.Column="2" Content="6" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
+                            <Button Grid.Row="1" Grid.Column="0" Content="4" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="4"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="5" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="5"/>
+                            <Button Grid.Row="1" Grid.Column="2" Content="6" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="6"/>
 
-                            <Button Grid.Row="2" Grid.Column="0" Content="1" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="2" Grid.Column="1" Content="2" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="2" Grid.Column="2" Content="3" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
+                            <Button Grid.Row="2" Grid.Column="0" Content="1" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="1"/>
+                            <Button Grid.Row="2" Grid.Column="1" Content="2" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="2"/>
+                            <Button Grid.Row="2" Grid.Column="2" Content="3" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="3"/>
 
-                            <Button Grid.Row="3" Grid.Column="0" Content="," Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="3" Grid.Column="1" Content="0" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
-                            <Button Grid.Row="3" Grid.Column="2" Content="⌫" Style="{StaticResource NumericButton}" Click="BtnBackspace_Click" FontSize="18"/>
+                            <Button Grid.Row="3" Grid.Column="0" Content="," Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter=","/>
+                            <Button Grid.Row="3" Grid.Column="1" Content="0" Style="{StaticResource NumericButton}" Command="{Binding AdicionarNumeroCommand}" CommandParameter="0"/>
+                            <Button Grid.Row="3" Grid.Column="2" Content="⌫" Style="{StaticResource NumericButton}" Command="{Binding BackspaceCommand}" FontSize="18"/>
                         </Grid>
                     </Grid>
                 </Border>
@@ -605,7 +623,7 @@
                                Height="56"
                                FontSize="16"
                                Margin="0,0,0,10"
-                               Click="BtnFinalizarVenda_Click"/>
+                               Command="{Binding FinalizarVendaCommand}"/>
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -618,14 +636,13 @@
                                    Style="{StaticResource DangerButton}"
                                    Height="40"
                                    Margin="0,0,5,0"
-                                   Click="BtnCancelarVenda_Click"/>
+                                   Command="{Binding CancelarVendaCommand}"/>
 
                             <Button Grid.Column="1"
                                    Content="💾 Suspender"
                                    Style="{StaticResource WarningButton}"
                                    Height="40"
-                                   Margin="5,0,0,0"
-                                   Click="BtnSuspenderVenda_Click"/>
+                                   Margin="5,0,0,0"/>
                         </Grid>
                     </StackPanel>
                 </Border>
