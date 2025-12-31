@@ -1,239 +1,393 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SmartSystemPDV.Models;
-using System;
+﻿using SmartSystemPDV.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace SmartSystemPDV.Data.Context
+namespace SmartSystemPDV.Data.Context;
+
+/// <summary>
+/// Contexto do banco de dados - Configurado para SQL Server
+/// </summary>
+public class AppDbContext : DbContext
 {
-    /// <summary>
-    /// Contexto do banco de dados - Configurado para SQL Server
-    /// </summary>
-    public class AppDbContext : DbContext
+    public AppDbContext()
     {
-        public AppDbContext()
+    }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
+
+    // DbSets - Tabelas do banco de dados
+    public DbSet<Produto> Produtos { get; set; }
+    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Venda> Vendas { get; set; }
+    public DbSet<ItemVenda> ItensVenda { get; set; }
+    public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<FormaPagamento> FormasPagamento { get; set; }
+    public DbSet<Categoria> Categorias { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
         {
-        }
+            // ===== CONFIGURAÇÃO SQL SERVER =====
+            // OPÇÃO 1: Autenticação Windows (Recomendado para rede local)
+            //optionsBuilder.UseSqlServer(
+            //    "Server=localhost;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
 
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+            // OPÇÃO 2: Autenticação SQL Server (com usuário e senha)
+            // optionsBuilder.UseSqlServer(
+            //     "Server=localhost;Database=SmartSystemPDV;User Id=sa;Password=SuaSenha123;TrustServerCertificate=True;");
+
+            // OPÇÃO 3: SQL Server Express com nome da instância
+            optionsBuilder.UseSqlServer(
+                "Server=.\\SQLEXPRESS;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
+
+            // OPÇÃO 4: Servidor remoto
+            // optionsBuilder.UseSqlServer(
+            //     "Server=192.168.1.100,1433;Database=SmartSystemPDV;User Id=usuario;Password=senha;TrustServerCertificate=True;");
+
+            // OPÇÃO 5: Azure SQL Database
+            // optionsBuilder.UseSqlServer(
+            //     "Server=tcp:seuservidor.database.windows.net,1433;Database=SmartSystemPDV;User Id=usuario;Password=senha;Encrypt=True;");
+        }
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Configurações de Produto
+        modelBuilder.Entity<Produto>(entity =>
         {
-        }
+            entity.HasKey(e => e.Id);
 
-        // DbSets - Tabelas do banco de dados
-        public DbSet<Produto> Produtos { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Venda> Vendas { get; set; }
-        public DbSet<ItemVenda> ItensVenda { get; set; }
-        public DbSet<MovimentacaoEstoque> MovimentacoesEstoque { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<FormaPagamento> FormasPagamento { get; set; }
-        public DbSet<Categoria> Categorias { get; set; }
+            entity.Property(e => e.Codigo)
+                .IsRequired();
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            entity.Property(e => e.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(e => e.Descricao)
+                .HasMaxLength(500);
+
+            entity.Property(e => e.Categoria)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Unidade)
+                .IsRequired()
+                .HasMaxLength(10);
+
+            entity.Property(e => e.CodigoBarras)
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Lote)
+                .HasMaxLength(30);
+
+            entity.Property(e => e.PrecoCusto)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.PrecoVenda)
+                .IsRequired()
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.Estoque)
+                .IsRequired()
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.EstoqueAtual)
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.EstoqueMinimo)
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.Status)
+                .IsRequired()
+                .HasMaxLength(20);
+
+            entity.Property(e => e.DataCadastro)
+                .HasDefaultValueSql("GETDATE()");
+
+            entity.Property(e => e.Ativo)
+                .HasDefaultValue(true);
+
+            entity.HasIndex(e => e.Codigo)
+                .IsUnique();
+
+            entity.HasOne(p => p.CategoriaNavigation)
+                .WithMany(c => c.Produtos)
+                .HasForeignKey(p => p.CategoriaId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // Configurações de Cliente
+        modelBuilder.Entity<Cliente>(entity =>
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // ===== CONFIGURAÇÃO SQL SERVER =====
-                // OPÇÃO 1: Autenticação Windows (Recomendado para rede local)
-                //optionsBuilder.UseSqlServer(
-                //    "Server=localhost;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
+            entity.HasKey(e => e.Id);
 
-                // OPÇÃO 2: Autenticação SQL Server (com usuário e senha)
-                // optionsBuilder.UseSqlServer(
-                //     "Server=localhost;Database=SmartSystemPDV;User Id=sa;Password=SuaSenha123;TrustServerCertificate=True;");
+            entity.Property(e => e.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
 
-                // OPÇÃO 3: SQL Server Express com nome da instância
-                optionsBuilder.UseSqlServer(
-                    "Server=.\\SQLEXPRESS;Database=SmartSystemPDV;Integrated Security=True;TrustServerCertificate=True;");
+            entity.Property(e => e.CpfCnpj)
+                .HasMaxLength(18);
 
-                // OPÇÃO 4: Servidor remoto
-                // optionsBuilder.UseSqlServer(
-                //     "Server=192.168.1.100,1433;Database=SmartSystemPDV;User Id=usuario;Password=senha;TrustServerCertificate=True;");
+            entity.Property(e => e.Email)
+                .HasMaxLength(100);
 
-                // OPÇÃO 5: Azure SQL Database
-                // optionsBuilder.UseSqlServer(
-                //     "Server=tcp:seuservidor.database.windows.net,1433;Database=SmartSystemPDV;User Id=usuario;Password=senha;Encrypt=True;");
-            }
-        }
+            entity.Property(e => e.Telefone)
+                .HasMaxLength(20);
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+            entity.Property(e => e.Endereco)
+                .HasMaxLength(200);
+
+            entity.Property(e => e.Ativo)
+                .HasDefaultValue(true);
+
+            entity.Property(e => e.DataCadastro)
+                .HasDefaultValueSql("GETDATE()");
+
+            entity.HasIndex(e => e.CpfCnpj)
+                .IsUnique()
+                .HasFilter("[CpfCnpj] IS NOT NULL");
+        });
+
+        // Configurações de Venda
+        modelBuilder.Entity<Venda>(entity =>
         {
-            base.OnModelCreating(modelBuilder);
+            entity.HasKey(e => e.Id);
 
-            // Configurações de Produto
-            modelBuilder.Entity<Produto>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Codigo).IsRequired();
-                entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.Descricao).HasMaxLength(500);
-                entity.Property(e => e.PrecoCusto).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.PrecoVenda).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.DataCadastro).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.NumeroVenda)
+                .IsRequired()
+                .HasMaxLength(20);
 
-                entity.HasIndex(e => e.Codigo).IsUnique();
-            });
+            entity.Property(e => e.DataVenda)
+                .HasDefaultValueSql("GETDATE()");
 
-            // Configurações de Cliente
-            modelBuilder.Entity<Cliente>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.CpfCnpj).HasMaxLength(18);
-                entity.Property(e => e.Email).HasMaxLength(100);
-                entity.Property(e => e.Telefone).HasMaxLength(20);
-                entity.Property(e => e.Endereco).HasMaxLength(200);
-                entity.Property(e => e.DataCadastro).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.UsuarioId)
+                .IsRequired()
+                .HasMaxLength(50);
 
-                entity.HasIndex(e => e.CpfCnpj).IsUnique();
-            });
+            entity.Property(e => e.ValorTotal)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-            // Configurações de Venda
-            modelBuilder.Entity<Venda>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.NumeroVenda).IsRequired();
-                entity.Property(e => e.ValorTotal).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.ValorDesconto).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.ValorPago).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.Troco).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.DataVenda).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.ValorDesconto)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-                entity.HasOne(e => e.Cliente)
-                    .WithMany()
-                    .HasForeignKey(e => e.ClienteId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.ValorFinal)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-                entity.HasOne(e => e.Usuario)
-                    .WithMany()
-                    .HasForeignKey(e => e.UsuarioId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.ValorPago)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-                entity.HasIndex(e => e.NumeroVenda).IsUnique();
-            });
+            entity.Property(e => e.Troco)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
 
-            // Configurações de ItemVenda
-            modelBuilder.Entity<ItemVenda>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.PrecoUnitario).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.Desconto).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.Subtotal).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.FormaPagamento)
+                .IsRequired()
+                .HasMaxLength(50);
 
-                entity.HasOne(e => e.Venda)
-                    .WithMany(v => v.Itens)
-                    .HasForeignKey(e => e.VendaId)
-                    .OnDelete(DeleteBehavior.Cascade);
+            entity.Property(e => e.NumeroParcelas)
+                .HasDefaultValue(0);
 
-                entity.HasOne(e => e.Produto)
-                    .WithMany()
-                    .HasForeignKey(e => e.ProdutoId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            entity.Property(e => e.Status)
+                .HasMaxLength(20);
 
-            // Configurações de MovimentacaoEstoque
-            modelBuilder.Entity<MovimentacaoEstoque>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Tipo).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.Motivo).HasMaxLength(500);
-                entity.Property(e => e.DataHora).HasDefaultValueSql("GETDATE()");
+            entity.Property(e => e.Observacoes)
+                .HasMaxLength(500);
 
-                entity.HasOne(e => e.Produto)
-                    .WithMany()
-                    .HasForeignKey(e => e.ProdutoId)
-                    .OnDelete(DeleteBehavior.Restrict);
+            entity.Property(e => e.MotivoCancelamento)
+                .HasMaxLength(500);
 
-                entity.HasOne(e => e.Usuario)
-                    .WithMany()
-                    .HasForeignKey(e => e.UsuarioId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            entity.HasOne(e => e.Cliente)
+                .WithMany()
+                .HasForeignKey(e => e.ClienteId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            // Configurações de Usuario
-            modelBuilder.Entity<Usuario>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
-                entity.Property(e => e.Login).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.Senha).IsRequired().HasMaxLength(255);
-                entity.Property(e => e.Email).HasMaxLength(100);
-                entity.Property(e => e.DataCadastro).HasDefaultValueSql("GETDATE()");
+            entity.HasMany(e => e.Itens)
+                .WithOne(i => i.Venda)
+                .HasForeignKey(i => i.VendaId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-                entity.HasIndex(e => e.Login).IsUnique();
-            });
+            entity.HasIndex(e => e.NumeroVenda)
+                .IsUnique();
+        });
 
-            // Configurações de FormaPagamento
-            modelBuilder.Entity<FormaPagamento>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Nome).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.PermiteParcelas).HasDefaultValue(false);
-            });
 
-            // Configurações de Categoria
-            modelBuilder.Entity<Categoria>(entity =>
-            {
-                entity.HasKey(e => e.Id);
-                entity.Property(e => e.Nome).IsRequired().HasMaxLength(50);
-                entity.Property(e => e.Descricao).HasMaxLength(200);
-            });
-
-            // Dados iniciais (Seed Data) - Apenas se usar Migrations
-            // Caso use o script SQL, comente esta seção
-            // SeedData(modelBuilder);
-        }
-
-        private void SeedData(ModelBuilder modelBuilder)
+        // Configurações de ItemVenda
+        modelBuilder.Entity<ItemVenda>(entity =>
         {
-            // Categorias padrão
-            modelBuilder.Entity<Categoria>().HasData(
-                new Categoria { Id = 1, Nome = "Eletrônicos", Descricao = "Produtos eletrônicos", Ativo = true },
-                new Categoria { Id = 2, Nome = "Alimentos", Descricao = "Produtos alimentícios", Ativo = true },
-                new Categoria { Id = 3, Nome = "Bebidas", Descricao = "Bebidas diversas", Ativo = true },
-                new Categoria { Id = 4, Nome = "Limpeza", Descricao = "Produtos de limpeza", Ativo = true },
-                new Categoria { Id = 5, Nome = "Higiene", Descricao = "Produtos de higiene pessoal", Ativo = true },
-                new Categoria { Id = 6, Nome = "Vestuário", Descricao = "Roupas e acessórios", Ativo = true },
-                new Categoria { Id = 7, Nome = "Outros", Descricao = "Outros produtos", Ativo = true }
-            );
+            entity.HasKey(e => e.Id);
 
-            // Formas de pagamento padrão
-            modelBuilder.Entity<FormaPagamento>().HasData(
-                new FormaPagamento { Id = 1, Nome = "Dinheiro", PermiteParcelas = false, Ativo = true },
-                new FormaPagamento { Id = 2, Nome = "Cartão de Débito", PermiteParcelas = false, Ativo = true },
-                new FormaPagamento { Id = 3, Nome = "Cartão de Crédito", PermiteParcelas = true, Ativo = true },
-                new FormaPagamento { Id = 4, Nome = "PIX", PermiteParcelas = false, Ativo = true },
-                new FormaPagamento { Id = 5, Nome = "Boleto", PermiteParcelas = false, Ativo = true },
-                new FormaPagamento { Id = 6, Nome = "Crediário", PermiteParcelas = true, Ativo = true }
-            );
+            entity.Property(e => e.ProdutoNome)
+                .IsRequired()
+                .HasMaxLength(200);
 
-            // Usuário administrador padrão
-            modelBuilder.Entity<Usuario>().HasData(
-                new Usuario
-                {
-                    Id = 1,
-                    Nome = "Administrador",
-                    Login = "admin",
-                    Senha = "admin123", // Em produção, use hash de senha
-                    Email = "admin@smartpdv.com",
-                    Perfil = "Administrador",
-                    Ativo = true,
-                    DataCadastro = DateTime.Now
-                }
-            );
+            entity.Property(e => e.Quantidade)
+                .HasColumnType("decimal(18,3)")
+                .HasDefaultValue(0);
 
-            // Cliente padrão
-            modelBuilder.Entity<Cliente>().HasData(
-                new Cliente
-                {
-                    Id = 1,
-                    Nome = "Cliente Padrão",
-                    CpfCnpj = "00000000000",
-                    Email = "",
-                    Telefone = "",
-                    Endereco = "",
-                    Ativo = true,
-                    DataCadastro = DateTime.Now
-                }
-            );
-        }
+            entity.Property(e => e.PrecoUnitario)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.Desconto)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.Subtotal)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.Sequencia)
+                .HasDefaultValue(1);
+
+            entity.HasOne(e => e.Venda)
+                .WithMany(v => v.Itens)
+                .HasForeignKey(e => e.VendaId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(e => e.Produto)
+                .WithMany()
+                .HasForeignKey(e => e.ProdutoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(e => new { e.VendaId, e.Sequencia })
+                .IsUnique();
+        });
+
+
+        // Configurações de MovimentacaoEstoque
+        modelBuilder.Entity<MovimentacaoEstoque>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.DataHora)
+                .IsRequired()
+                .HasDefaultValueSql("GETDATE()");
+
+            entity.Property(e => e.Tipo)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Quantidade)
+                .IsRequired();
+
+            entity.Property(e => e.QuantidadeAnterior)
+                .IsRequired();
+
+            entity.Property(e => e.QuantidadeFinal)
+                .IsRequired();
+
+            entity.Property(e => e.Motivo)
+                .HasMaxLength(500);
+
+            entity.HasOne(e => e.Produto)
+                .WithMany()
+                .HasForeignKey(e => e.ProdutoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Usuario)
+                .WithMany()
+                .HasForeignKey(e => e.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.Ignore(e => e.NomeProduto);
+
+            entity.HasIndex(e => e.DataHora);
+            entity.HasIndex(e => e.ProdutoId);
+        });
+
+
+        // Configurações de Usuario
+        modelBuilder.Entity<Usuario>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(e => e.Login)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Senha)
+                .IsRequired()
+                .HasMaxLength(255);
+
+            entity.Property(e => e.Email)
+                .HasMaxLength(100);
+
+            entity.Property(e => e.Perfil)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.Property(e => e.Ativo)
+                .HasDefaultValue(true);
+
+            entity.Property(e => e.DataCadastro)
+                .HasDefaultValueSql("GETDATE()");
+
+            entity.HasIndex(e => e.Login)
+                .IsUnique();
+        });
+
+
+        // Configurações de FormaPagamento
+        modelBuilder.Entity<FormaPagamento>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(e => e.Tipo)
+                .HasMaxLength(20);
+
+            entity.Property(e => e.PermiteParcelas)
+                .HasDefaultValue(false);
+
+            entity.Property(e => e.MaxParcelas)
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.TaxaJuros)
+                .HasColumnType("decimal(18,2)")
+                .HasDefaultValue(0);
+
+            entity.Property(e => e.Ativo)
+                .HasDefaultValue(true);
+
+            entity.Property(e => e.Icone)
+                .HasMaxLength(50);
+        });
+
+
+        // Configurações de Categoria
+        modelBuilder.Entity<Categoria>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+
+            entity.Property(e => e.Nome)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            entity.Property(e => e.Descricao)
+                .HasMaxLength(300);
+
+            entity.Property(e => e.Ativo)
+                .HasDefaultValue(true);
+        });
     }
 }

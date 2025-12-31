@@ -17,4 +17,7 @@ public interface IProdutoRepository : IRepository<Produto>
     Task<IEnumerable<Produto>> GetPorCategoriaAsync(string categoria);
     decimal GetValorTotalEstoque();
     Task<decimal> GetValorTotalEstoqueAsync();
+    Task<IEnumerable<Produto>> SearchAsync(string termo);
+    Task<IEnumerable<Produto>> GetProdutosBaixoEstoqueAsync();
+    Task<bool> AtualizarEstoqueAsync(int produtoId, int quantidade);
 }

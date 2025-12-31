@@ -1,5 +1,7 @@
 ﻿using SmartSystemPDV.Data.Repositories.CadastroProduto;
 using SmartSystemPDV.Data.Repositories.CadastroUsuarios;
+using SmartSystemPDV.Data.Repositories.FormaPagamentos;
+using SmartSystemPDV.Data.Repositories.Vendas;
 using System;
 using System.Threading.Tasks;
 
@@ -13,10 +15,10 @@ public interface IUnitOfWork : IDisposable
     // Repositórios
     IProdutoRepository Produtos { get; }
     //IClienteRepository Clientes { get; }
-    //IVendaRepository Vendas { get; }
+    IVendaRepository Vendas { get; }
     //IMovimentacaoEstoqueRepository MovimentacoesEstoque { get; }
     //IUsuarioRepository Usuarios { get; }
-    //IFormaPagamentoRepository FormasPagamento { get; }
+    IFormaPagamentoRepository FormasPagamento { get; }
     //ICategoriaRepository Categorias { get; }
 
     // Métodos para salvar alterações

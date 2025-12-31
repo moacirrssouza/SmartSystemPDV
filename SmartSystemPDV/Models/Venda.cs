@@ -15,31 +15,29 @@ public class Venda
     [MaxLength(20)]
     public string NumeroVenda { get; set; }
 
-    [Required]
-    public DateTime DataVenda { get; set; }
+    public DateTime DataVenda { get; set; } = DateTime.Now;
+
+    public int? ClienteId { get; set; }
+    public virtual Cliente Cliente { get; set; }
 
     [Required]
-    public int ClienteId { get; set; }
+    [MaxLength(50)]
+    public string UsuarioId { get; set; }
 
-    [ForeignKey("ClienteId")]
-    public Cliente Cliente { get; set; }
-
-    [Required]
-    public int UsuarioId { get; set; }
-
-    [ForeignKey("UsuarioId")]
-    public Usuario Usuario { get; set; }
-
-    [Required]
     [Column(TypeName = "decimal(18,2)")]
     public decimal ValorTotal { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
     public decimal ValorDesconto { get; set; }
 
+    [Column(TypeName = "decimal(18,2)")]
+    public decimal ValorFinal { get; set; }
+
     [Required]
     [MaxLength(50)]
     public string FormaPagamento { get; set; }
+
+    public int? NumeroParcelas { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
     public decimal ValorPago { get; set; }
@@ -47,14 +45,14 @@ public class Venda
     [Column(TypeName = "decimal(18,2)")]
     public decimal Troco { get; set; }
 
-    public int? NumeroParcelas { get; set; }
-
     [MaxLength(20)]
     public string Status { get; set; }
 
     [MaxLength(500)]
     public string Observacoes { get; set; }
 
-    // Navegação
-    public ICollection<ItemVenda> Itens { get; set; }
+    public DateTime? DataCancelamento { get; set; }
+    public string MotivoCancelamento { get; set; }
+
+    public virtual ICollection<ItemVenda> Itens { get; set; }
 }

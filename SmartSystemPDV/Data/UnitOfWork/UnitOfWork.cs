@@ -3,6 +3,8 @@ using SmartSystemPDV.Data.Repositories.CadastroUsuarios;
 using SmartSystemPDV.Repositories.CadastroProduto;
 using Microsoft.EntityFrameworkCore.Storage;
 using SmartSystemPDV.Data.Context;
+using SmartSystemPDV.Data.Repositories.Vendas;
+using SmartSystemPDV.Data.Repositories.FormaPagamentos;
 
 namespace SmartSystemPDV.Data.UnitOfWork;
 
@@ -17,10 +19,10 @@ public class UnitOfWork : IUnitOfWork
     // Repositórios
     private IProdutoRepository _produtos;
     //private IClienteRepository _clientes;
-    //private IVendaRepository _vendas;
+    private IVendaRepository _vendas;
     //private IMovimentacaoEstoqueRepository _movimentacoesEstoque;
     //private IUsuarioRepository _usuarios;
-    //private IFormaPagamentoRepository _formasPagamento;
+    private IFormaPagamentoRepository _formasPagamento;
     //private ICategoriaRepository _categorias;
 
     public UnitOfWork(AppDbContext context)
@@ -50,15 +52,15 @@ public class UnitOfWork : IUnitOfWork
     //    }
     //}
 
-    //public IVendaRepository Vendas
-    //{
-    //    get
-    //    {
-    //        if (_vendas == null)
-    //            _vendas = new VendaRepository(_context);
-    //        return _vendas;
-    //    }
-    //}
+    public IVendaRepository Vendas
+    {
+        get
+        {
+            if (_vendas == null)
+                _vendas = new VendaRepository(_context);
+            return _vendas;
+        }
+    }
 
     //public IMovimentacaoEstoqueRepository MovimentacoesEstoque
     //{
@@ -80,15 +82,15 @@ public class UnitOfWork : IUnitOfWork
     //    }
     //}
 
-    //public IFormaPagamentoRepository FormasPagamento
-    //{
-    //    get
-    //    {
-    //        if (_formasPagamento == null)
-    //            _formasPagamento = new FormaPagamentoRepository(_context);
-    //        return _formasPagamento;
-    //    }
-    //}
+    public IFormaPagamentoRepository FormasPagamento
+    {
+        get
+        {
+            if (_formasPagamento == null)
+                _formasPagamento = new FormaPagamentoRepository(_context);
+            return _formasPagamento;
+        }
+    }
 
     //public ICategoriaRepository Categorias
     //{

@@ -32,6 +32,9 @@ namespace SmartSystemPDV.View.CadastroProdutos
         public CadastroProdutosWindow()
         {
             InitializeComponent();
+            HabilitarCampos(false);
+            btnSalvar.IsEnabled = false;
+            btnCancelar.IsEnabled = false;
             _context = new AppDbContext();
             CarregarProdutos();
         }
@@ -43,11 +46,13 @@ namespace SmartSystemPDV.View.CadastroProdutos
         private void BtnNovo_Click(object sender, RoutedEventArgs e)
         {
             LimparCampos();
+            HabilitarCampos(true);
             txtCodigo.Text = GerarProximoCodigo().ToString();
             _produtoSelecionado = null;
             btnSalvar.Content = "💾 Salvar";
             txtNome.Focus();
         }
+
 
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
@@ -65,6 +70,10 @@ namespace SmartSystemPDV.View.CadastroProdutos
                         Descricao = txtDescricao.Text.Trim(),
                         Categoria = ((ComboBoxItem)cbCategoria.SelectedItem).Content.ToString(),
                         Unidade = ((ComboBoxItem)cbUnidade.SelectedItem).Content.ToString(),
+                        CodigoBarras = txtCodigoBarras.Text.Trim(),
+                        Lote = txtLote.Text.Trim(),
+                        DataFabricacao = dpDataFabricacao.SelectedDate,
+                        DataVencimento = dpDataVencimento.SelectedDate,
                         PrecoCusto = decimal.Parse(txtPrecoCusto.Text, CultureInfo.CurrentCulture),
                         PrecoVenda = decimal.Parse(txtPrecoVenda.Text, CultureInfo.CurrentCulture),
                         Estoque = int.Parse(txtEstoque.Text),
@@ -82,6 +91,10 @@ namespace SmartSystemPDV.View.CadastroProdutos
                     _produtoSelecionado.Descricao = txtDescricao.Text.Trim();
                     _produtoSelecionado.Categoria = ((ComboBoxItem)cbCategoria.SelectedItem).Content.ToString();
                     _produtoSelecionado.Unidade = ((ComboBoxItem)cbUnidade.SelectedItem).Content.ToString();
+                    _produtoSelecionado.CodigoBarras = txtCodigoBarras.Text.Trim();
+                    _produtoSelecionado.Lote = txtLote.Text.Trim();
+                    _produtoSelecionado.DataFabricacao = dpDataFabricacao.SelectedDate;
+                    _produtoSelecionado.DataVencimento = dpDataVencimento.SelectedDate;
                     _produtoSelecionado.PrecoCusto = decimal.Parse(txtPrecoCusto.Text, CultureInfo.CurrentCulture);
                     _produtoSelecionado.PrecoVenda = decimal.Parse(txtPrecoVenda.Text, CultureInfo.CurrentCulture);
                     _produtoSelecionado.Estoque = int.Parse(txtEstoque.Text);
@@ -114,6 +127,7 @@ namespace SmartSystemPDV.View.CadastroProdutos
             {
                 _produtoSelecionado = produto;
                 PreencherCampos(produto);
+                HabilitarCampos(true);
                 btnSalvar.Content = "💾 Atualizar";
             }
         }
@@ -153,6 +167,9 @@ namespace SmartSystemPDV.View.CadastroProdutos
         private void BtnCancelar_Click(object sender, RoutedEventArgs e)
         {
             LimparCampos();
+            HabilitarCampos(false);
+
+            btnNovo.IsEnabled = true;
             dgProdutos.SelectedItem = null;
             _produtoSelecionado = null;
             txtCodigo.Text = GerarProximoCodigo().ToString();
@@ -167,7 +184,7 @@ namespace SmartSystemPDV.View.CadastroProdutos
 
         private void BtnVoltar_Click(object sender, RoutedEventArgs e)
         {
-           this.Close();
+            this.Close();
         }
 
         #endregion
@@ -306,6 +323,8 @@ namespace SmartSystemPDV.View.CadastroProdutos
                         p.Codigo.ToString().Contains(filtro) ||
                         p.Nome.ToLower().Contains(filtro) ||
                         p.Categoria.ToLower().Contains(filtro) ||
+                        p.CodigoBarras.ToLower().Contains(filtro) ||
+                        p.Lote.ToLower().Contains(filtro) ||
                         p.Status.ToLower().Contains(filtro));
                 }
 
@@ -333,7 +352,7 @@ namespace SmartSystemPDV.View.CadastroProdutos
                 txtTotalProdutos == null ||
                 pnlNumerosPagina == null)
                 return;
-                        
+
 
             // Calcular total de páginas
             _totalItens = _todosOsProdutos.Count;
@@ -519,6 +538,10 @@ namespace SmartSystemPDV.View.CadastroProdutos
             txtCodigo.Text = produto.Codigo.ToString();
             txtNome.Text = produto.Nome;
             txtDescricao.Text = produto.Descricao;
+            txtCodigoBarras.Text = produto.CodigoBarras;
+            txtLote.Text = produto.Lote;
+            dpDataFabricacao.SelectedDate = produto.DataFabricacao;
+            dpDataVencimento.SelectedDate = produto.DataVencimento;
             txtPrecoCusto.Text = produto.PrecoCusto.ToString("F2");
             txtPrecoVenda.Text = produto.PrecoVenda.ToString("F2");
             txtEstoque.Text = produto.Estoque.ToString();
@@ -545,12 +568,42 @@ namespace SmartSystemPDV.View.CadastroProdutos
         }
 
         /// <summary>
+        ///  Método central para habilitar/desabilitar
+        /// </summary>
+        /// <param name="habilitar"></param>
+        private void HabilitarCampos(bool habilitar)
+        {
+            txtNome.IsEnabled = habilitar;
+            txtDescricao.IsEnabled = habilitar;
+            txtCodigoBarras.IsEnabled = habilitar;
+            txtLote.IsEnabled = habilitar;
+            dpDataFabricacao.IsEnabled = habilitar;
+            dpDataVencimento.IsEnabled = habilitar;
+            txtPrecoCusto.IsEnabled = habilitar;
+            txtPrecoVenda.IsEnabled = habilitar;
+            txtEstoque.IsEnabled = habilitar;
+            txtEstoqueMinimo.IsEnabled = habilitar;
+
+            cbCategoria.IsEnabled = habilitar;
+            cbUnidade.IsEnabled = habilitar;
+            cbStatus.IsEnabled = habilitar;
+
+            btnSalvar.IsEnabled = habilitar;
+            btnCancelar.IsEnabled = habilitar;
+        }
+
+
+        /// <summary>
         /// Limpa todos os campos do formulário
         /// </summary>
         private void LimparCampos()
         {
             txtNome.Clear();
             txtDescricao.Clear();
+            txtCodigoBarras.Clear();
+            txtLote.Clear();
+            dpDataFabricacao.SelectedDate = null;
+            dpDataVencimento.SelectedDate = null;
             txtPrecoCusto.Clear();
             txtPrecoVenda.Clear();
             txtEstoque.Clear();
@@ -615,6 +668,18 @@ namespace SmartSystemPDV.View.CadastroProdutos
                     MessageBoxButton.OK, MessageBoxImage.Warning);
                 txtEstoque.Focus();
                 return false;
+            }
+
+            // Validar datas
+            if (dpDataFabricacao.SelectedDate.HasValue && dpDataVencimento.SelectedDate.HasValue)
+            {
+                if (dpDataVencimento.SelectedDate < dpDataFabricacao.SelectedDate)
+                {
+                    MessageBox.Show("Data de vencimento não pode ser anterior à data de fabricação.", "Atenção",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    dpDataVencimento.Focus();
+                    return false;
+                }
             }
 
             if (venda < custo)

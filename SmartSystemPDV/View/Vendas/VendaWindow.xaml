@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SmartSystemPDV.View.Vendas"
+        xmlns:controls="clr-namespace:SmartSystemPDV.Controls"
         mc:Ignorable="d"
         Title="PDV - Ponto de Venda" 
         Height="750" 
@@ -11,10 +12,11 @@
         MinHeight="700"
         MinWidth="1300"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized">
+        WindowState="Maximized"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
-        <!-- Estilo para TextBox -->
+        <!-- Estilos Base -->
         <Style x:Key="ModernTextBox" TargetType="TextBox">
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="FontSize" Value="13"/>
@@ -22,32 +24,32 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Height" Value="36"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                        Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#1A4D7A"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
-        <!-- Estilo para TextBox Grande -->
         <Style x:Key="LargeTextBox" TargetType="TextBox" BasedOn="{StaticResource ModernTextBox}">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Height" Value="42"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
-        <!-- Estilo para ComboBox -->
-        <Style x:Key="ModernComboBox" TargetType="ComboBox">
-            <Setter Property="Padding" Value="10,8"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="BorderBrush" Value="#CCCCCC"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <!-- Estilo para ComboBox Grande -->
-        <Style x:Key="LargeComboBox" TargetType="ComboBox" BasedOn="{StaticResource ModernComboBox}">
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Height" Value="42"/>
-        </Style>
-
-        <!-- Estilo para Label -->
         <Style x:Key="ModernLabel" TargetType="Label">
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -55,7 +57,7 @@
             <Setter Property="Padding" Value="0,0,0,4"/>
         </Style>
 
-        <!-- Estilo para botões -->
+        <!-- Estilos de Botões -->
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="#1A4D7A"/>
             <Setter Property="Foreground" Value="White"/>
@@ -125,7 +127,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Estilo para DataGrid -->
+        <!-- DataGrid -->
         <Style x:Key="ModernDataGrid" TargetType="DataGrid">
             <Setter Property="AutoGenerateColumns" Value="False"/>
             <Setter Property="CanUserAddRows" Value="False"/>
@@ -142,7 +144,7 @@
             <Setter Property="HorizontalGridLinesBrush" Value="#EEEEEE"/>
         </Style>
 
-        <!-- Estilo para Cards -->
+        <!-- Cards -->
         <Style x:Key="CardStyle" TargetType="Border">
             <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="8"/>
@@ -156,7 +158,7 @@
             </Setter>
         </Style>
 
-        <!-- Estilo para Botões Numéricos -->
+        <!-- Botões Numéricos -->
         <Style x:Key="NumericButton" TargetType="Button">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#333333"/>
@@ -293,7 +295,7 @@
                 <ColumnDefinition Width="420"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Painel Esquerdo - Produtos e Carrinho -->
+            <!-- Painel Esquerdo -->
             <Grid Grid.Column="0" Margin="20,20,10,20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -325,22 +327,20 @@
                             </Grid.ColumnDefinitions>
 
                             <!-- Código/Barras -->
-                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <StackPanel Grid.Column="0" Margin="0,0,0,10">
                                 <Label Content="Código/Barras:" Style="{StaticResource ModernLabel}"/>
                                 <TextBox x:Name="txtCodigoProduto"
                                         Style="{StaticResource LargeTextBox}"
-                                        KeyDown="TxtCodigoProduto_KeyDown"
-                                        PreviewTextInput="TextBox_PreviewTextInputNumeric"/>
+                                        KeyDown="TxtCodigoProduto_KeyDown"/>
                             </StackPanel>
 
-                            <!-- Nome do Produto -->
+                            <!-- Produto com Busca -->
                             <StackPanel Grid.Column="1" Margin="0,0,10,0">
                                 <Label Content="Produto:" Style="{StaticResource ModernLabel}"/>
-                                <ComboBox x:Name="cbProduto"
-                                         Style="{StaticResource LargeComboBox}"
-                                         SelectionChanged="CbProduto_SelectionChanged">
-                                    <ComboBoxItem Content="Selecione ou digite código..." IsSelected="True"/>
-                                </ComboBox>
+                                <controls:SearchableComboBox x:Name="cbProduto"
+                                                            Height="42"
+                                                            Placeholder="Digite para buscar produto..."
+                                                            SelectionChanged="CbProduto_SelectionChanged"/>
                             </StackPanel>
 
                             <!-- Quantidade -->
@@ -349,7 +349,7 @@
                                 <TextBox x:Name="txtQuantidadeProduto"
                                         Style="{StaticResource LargeTextBox}"
                                         Text="1"
-                                        PreviewTextInput="TextBox_PreviewTextInputNumeric"/>
+                                        PreviewTextInput="TextBox_PreviewTextInputDecimal"/>
                             </StackPanel>
 
                             <!-- Botão Adicionar -->
@@ -366,7 +366,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Carrinho de Compras -->
+                <!-- Carrinho -->
                 <Border Grid.Row="1" Style="{StaticResource CardStyle}">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -395,13 +395,12 @@
                             </StackPanel>
                         </Grid>
 
-                        <!-- DataGrid Carrinho -->
                         <DataGrid Grid.Row="1"
                                  x:Name="dgCarrinho"
                                  Style="{StaticResource ModernDataGrid}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="75"/>
-                                <DataGridTextColumn Header="Produto" Binding="{Binding Nome}" Width="*" MinWidth="200"/>
+                                <DataGridTextColumn Header="Código" Binding="{Binding ProdutoCodigo}" Width="75"/>
+                                <DataGridTextColumn Header="Produto" Binding="{Binding ProdutoNome}" Width="*" MinWidth="200"/>
                                 <DataGridTextColumn Header="Qtd" Binding="{Binding Quantidade}" Width="60"/>
                                 <DataGridTextColumn Header="Preço Unit." Binding="{Binding PrecoUnitario, StringFormat=C2}" Width="100"/>
                                 <DataGridTextColumn Header="Desconto" Binding="{Binding Desconto, StringFormat=C2}" Width="95"/>
@@ -411,7 +410,7 @@
                     </Grid>
                 </Border>
 
-                <!-- Resumo Rápido -->
+                <!-- Resumo -->
                 <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,16,0,0">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -471,16 +470,33 @@
                 </Border>
             </Grid>
 
-            <!-- Painel Direito - Pagamento e Ações -->
+            <!-- Painel Direito - Pagamento -->
             <Grid Grid.Column="1" Margin="10,20,20,20">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Forma de Pagamento -->
+                <!-- Cliente -->
                 <Border Grid.Row="0" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="👤 Cliente" 
+                                  FontSize="16" 
+                                  FontWeight="Bold"
+                                  Foreground="#1A4D7A"
+                                  Margin="0,0,0,12"/>
+
+                        <controls:SearchableComboBox x:Name="cbCliente"
+                                                    Height="42"
+                                                    Placeholder="Selecione o cliente..."
+                                                    SelectionChanged="CbCliente_SelectionChanged"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Pagamento -->
+                <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <StackPanel>
                         <TextBlock Text="💳 Forma de Pagamento" 
                                   FontSize="16" 
@@ -488,21 +504,14 @@
                                   Foreground="#1A4D7A"
                                   Margin="0,0,0,12"/>
 
-                        <Label Content="Método:" Style="{StaticResource ModernLabel}"/>
-                        <ComboBox x:Name="cbFormaPagamento"
-                                 Style="{StaticResource ModernComboBox}"
-                                 Margin="0,0,0,12"
-                                 SelectionChanged="CbFormaPagamento_SelectionChanged">
-                            <ComboBoxItem Content="💵 Dinheiro" IsSelected="True"/>
-                            <ComboBoxItem Content="💳 Cartão de Débito"/>
-                            <ComboBoxItem Content="💳 Cartão de Crédito"/>
-                            <ComboBoxItem Content="📱 PIX"/>
-                            <ComboBoxItem Content="📄 Boleto"/>
-                            <ComboBoxItem Content="📝 Crediário"/>
-                        </ComboBox>
+                        <controls:SearchableComboBox x:Name="cbFormaPagamento"
+                                                    Height="42"
+                                                    Margin="0,0,0,12"
+                                                    Placeholder="Selecione forma de pagamento..."
+                                                    SelectionChanged="CbFormaPagamento_SelectionChanged"/>
 
-                        <!-- Valor Pago (para Dinheiro) -->
-                        <StackPanel x:Name="pnlDinheiro" Visibility="Visible">
+                        <!-- Painel Dinheiro -->
+                        <StackPanel x:Name="pnlDinheiro" Visibility="Collapsed">
                             <Label Content="Valor Pago:" Style="{StaticResource ModernLabel}"/>
                             <TextBox x:Name="txtValorPago"
                                     Style="{StaticResource LargeTextBox}"
@@ -521,20 +530,14 @@
                                     Foreground="#28A745"/>
                         </StackPanel>
 
-                        <!-- Parcelas (para Crédito) -->
+                        <!-- Painel Parcelas -->
                         <StackPanel x:Name="pnlParcelas" Visibility="Collapsed">
                             <Label Content="Parcelas:" Style="{StaticResource ModernLabel}"/>
-                            <ComboBox x:Name="cbParcelas"
-                                     Style="{StaticResource ModernComboBox}"
-                                     Margin="0,0,0,10"
-                                     SelectionChanged="CbParcelas_SelectionChanged">
-                                <ComboBoxItem Content="1x sem juros" IsSelected="True"/>
-                                <ComboBoxItem Content="2x sem juros"/>
-                                <ComboBoxItem Content="3x sem juros"/>
-                                <ComboBoxItem Content="4x com juros"/>
-                                <ComboBoxItem Content="5x com juros"/>
-                                <ComboBoxItem Content="6x com juros"/>
-                            </ComboBox>
+                            <controls:SearchableComboBox x:Name="cbParcelas"
+                                                        Height="42"
+                                                        Margin="0,0,0,10"
+                                                        Placeholder="Selecione parcelas..."
+                                                        SelectionChanged="CbParcelas_SelectionChanged"/>
 
                             <Label Content="Valor da Parcela:" Style="{StaticResource ModernLabel}"/>
                             <TextBox x:Name="txtValorParcela"
@@ -548,7 +551,7 @@
                 </Border>
 
                 <!-- Teclado Numérico -->
-                <Border Grid.Row="1" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,0,0,16">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -575,22 +578,18 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Linha 1 -->
                             <Button Grid.Row="0" Grid.Column="0" Content="7" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="0" Grid.Column="1" Content="8" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="0" Grid.Column="2" Content="9" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
 
-                            <!-- Linha 2 -->
                             <Button Grid.Row="1" Grid.Column="0" Content="4" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="1" Grid.Column="1" Content="5" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="1" Grid.Column="2" Content="6" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
 
-                            <!-- Linha 3 -->
                             <Button Grid.Row="2" Grid.Column="0" Content="1" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="2" Grid.Column="1" Content="2" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="2" Grid.Column="2" Content="3" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
 
-                            <!-- Linha 4 -->
                             <Button Grid.Row="3" Grid.Column="0" Content="," Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="3" Grid.Column="1" Content="0" Style="{StaticResource NumericButton}" Click="BtnNumerico_Click"/>
                             <Button Grid.Row="3" Grid.Column="2" Content="⌫" Style="{StaticResource NumericButton}" Click="BtnBackspace_Click" FontSize="18"/>
@@ -599,7 +598,7 @@
                 </Border>
 
                 <!-- Botões de Ação -->
-                <Border Grid.Row="2" Style="{StaticResource CardStyle}">
+                <Border Grid.Row="3" Style="{StaticResource CardStyle}">
                     <StackPanel>
                         <Button Content="✅ FINALIZAR VENDA (F2)"
                                Style="{StaticResource SuccessButton}"

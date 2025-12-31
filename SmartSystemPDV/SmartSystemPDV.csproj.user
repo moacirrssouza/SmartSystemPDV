@@ -17,6 +17,9 @@
     <Compile Update="View\ControleEstoque\ControleEstoqueWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\SearchableComboBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Vendas\VendaWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

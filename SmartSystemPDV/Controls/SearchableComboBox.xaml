@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="SmartSystemPDV.Controls.SearchableComboBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="42" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <!-- Estilo do TextBox de Busca -->
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Padding" Value="10,10,35,10"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                            Margin="{TemplateBinding Padding}"/>
+
+                                <!-- Placeholder -->
+                                <TextBlock Text="{TemplateBinding Tag}"
+                                         Foreground="#999999"
+                                         FontSize="{TemplateBinding FontSize}"
+                                         VerticalAlignment="Center"
+                                         Margin="{TemplateBinding Padding}"
+                                         IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <!-- Ícone de Busca -->
+                                <TextBlock Text="🔍"
+                                         FontSize="16"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Right"
+                                         Margin="0,0,10,0"
+                                         Opacity="0.4"
+                                         IsHitTestVisible="False"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#1A4D7A"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo do ListBox de Resultados -->
+        <Style x:Key="ResultsListBoxStyle" TargetType="ListBox">
+            <Setter Property="BorderBrush" Value="#1A4D7A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        </Style>
+
+        <!-- Estilo dos Itens da Lista -->
+        <Style x:Key="ResultItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="0,0,0,1"
+                                BorderBrush="#F0F0F0"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#E8F4FD"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#CCE5FF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- TextBox de Busca -->
+        <TextBox x:Name="txtSearch"
+                 Grid.Row="0"
+                 Style="{StaticResource SearchTextBoxStyle}"
+                 Tag="Digite para buscar..."
+                 Height="42"
+                 TextChanged="TxtSearch_TextChanged"
+                 PreviewKeyDown="TxtSearch_PreviewKeyDown"
+                 GotFocus="TxtSearch_GotFocus"
+                 LostFocus="TxtSearch_LostFocus"/>
+
+        <!-- Popup com Resultados - StaysOpen=True é CRÍTICO -->
+        <Popup x:Name="popupResults"
+               Grid.Row="1"
+               PlacementTarget="{Binding ElementName=txtSearch}"
+               Placement="Bottom"
+               IsOpen="False"
+               StaysOpen="True"
+               AllowsTransparency="True"
+               PopupAnimation="Slide"
+               Width="{Binding ActualWidth, ElementName=txtSearch}"
+               MaxHeight="300">
+
+            <Border Background="White"
+                    BorderBrush="#1A4D7A"
+                    BorderThickness="1"
+                    CornerRadius="0,0,4,4"
+                    MouseDown="PopupBorder_MouseDown">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" 
+                                    ShadowDepth="2" 
+                                    Opacity="0.3" 
+                                    Color="#000000"/>
+                </Border.Effect>
+
+                <Grid>
+                    <!-- Lista de Resultados - SEM ItemTemplate fixo -->
+                    <ListBox x:Name="listResults"
+                             Style="{StaticResource ResultsListBoxStyle}"
+                             ItemContainerStyle="{StaticResource ResultItemStyle}"
+                             BorderThickness="0"
+                             MaxHeight="280"
+                             SelectionChanged="ListResults_SelectionChanged"
+                             MouseLeftButtonUp="ListResults_MouseLeftButtonUp"
+                             PreviewMouseDown="ListResults_PreviewMouseDown">
+                        <!-- O ItemTemplate será definido dinamicamente no code-behind -->
+                    </ListBox>
+
+                    <!-- Mensagem de "Nenhum Resultado" -->
+                    <TextBlock x:Name="txtNoResults"
+                             Text="Nenhum resultado encontrado"
+                             FontSize="13"
+                             Foreground="#999999"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"
+                             Padding="20"
+                             Visibility="Collapsed"/>
+
+                    <!-- Loader -->
+                    <StackPanel x:Name="pnlLoading"
+                              Orientation="Horizontal"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Margin="20"
+                              Visibility="Collapsed">
+                        <TextBlock Text="⏳"
+                                 FontSize="20"
+                                 Margin="0,0,10,0"/>
+                        <TextBlock Text="Buscando..."
+                                 FontSize="13"
+                                 Foreground="#666666"
+                                 VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Popup>
+
+        <!-- Badge de Item Selecionado -->
+        <Border x:Name="borderSelected"
+                Grid.Row="0"
+                Background="#E8F4FD"
+                BorderBrush="#1A4D7A"
+                BorderThickness="1"
+                CornerRadius="4"
+                Padding="10,8"
+                Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="txtSelectedItem"
+                         Grid.Column="0"
+                         FontSize="13"
+                         FontWeight="SemiBold"
+                         Foreground="#1A4D7A"
+                         VerticalAlignment="Center"
+                         TextTrimming="CharacterEllipsis"/>
+
+                <Button Grid.Column="1"
+                       Content="✕"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       Foreground="#DC3545"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Cursor="Hand"
+                       Width="24"
+                       Height="24"
+                       Margin="8,0,0,0"
+                       Click="BtnClearSelection_Click"
+                       ToolTip="Limpar seleção">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                              CornerRadius="12">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FFEBEE"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
