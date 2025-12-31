@@ -11,36 +11,27 @@ public class ItemVenda
     [Key]
     public int Id { get; set; }
 
-    [Required]
     public int VendaId { get; set; }
+    public virtual Venda Venda { get; set; }
 
-    [ForeignKey("VendaId")]
-    public Venda Venda { get; set; }
-
-    [Required]
     public int ProdutoId { get; set; }
-
-    [ForeignKey("ProdutoId")]
-    public Produto Produto { get; set; }
+    public virtual Produto Produto { get; set; }
 
     [Required]
-    public int Quantidade { get; set; }
+    [MaxLength(200)]
+    public string ProdutoNome { get; set; }
 
-    [Required]
+    [Column(TypeName = "decimal(18,3)")]
+    public decimal Quantidade { get; set; }
+
     [Column(TypeName = "decimal(18,2)")]
     public decimal PrecoUnitario { get; set; }
 
     [Column(TypeName = "decimal(18,2)")]
     public decimal Desconto { get; set; }
 
-    [Required]
     [Column(TypeName = "decimal(18,2)")]
     public decimal Subtotal { get; set; }
 
-    // Propriedades adicionais para exibição
-    [NotMapped]
-    public string Codigo { get; set; }
-
-    [NotMapped]
-    public string Nome { get; set; }
+    public int Sequencia { get; set; }
 }

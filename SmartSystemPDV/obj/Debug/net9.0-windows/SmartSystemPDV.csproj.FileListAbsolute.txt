@@ -335,6 +335,8 @@ C:\Projetos\SmartSystemPDV\SmartSystemPDV\bin\Debug\net9.0-windows\runtimes\win-
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\bin\Debug\net9.0-windows\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\bin\Debug\net9.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\SmartSystemPDV.csproj.AssemblyReference.cache
+C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\Controls\SearchableComboBox.baml
+C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\Controls\SearchableComboBox.g.cs
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\MainWindow.g.cs
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\View\CadastroProdutos\CadastroProdutosWindow.g.cs
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\View\CadastroUsuarios\CadastroUsuariosWindow.g.cs
@@ -343,6 +345,7 @@ C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\View\Gerencia
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\View\Login\LoginView.g.cs
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\View\Vendas\VendaWindow.g.cs
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\App.g.cs
+C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\SmartSystemPDV_MarkupCompile.cache
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\SmartSystemPDV_MarkupCompile.lref
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\obj\Debug\net9.0-windows\MainWindow.baml

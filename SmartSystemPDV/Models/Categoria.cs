@@ -11,11 +11,13 @@ public class Categoria
     public int Id { get; set; }
 
     [Required]
-    [MaxLength(50)]
+    [MaxLength(100)]
     public string Nome { get; set; }
 
-    [MaxLength(200)]
+    [MaxLength(300)]
     public string Descricao { get; set; }
 
-    public bool Ativo { get; set; }
+    public bool Ativo { get; set; } = true;
+
+    public virtual ICollection<Produto> Produtos { get; set; }
 }

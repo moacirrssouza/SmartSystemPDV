@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:SmartSystemPDV.View.CadastroProdutos"
         mc:Ignorable="d"
         Title="Cadastro de Produtos" 
-        Height="750" 
-        Width="1400"
-        MinHeight="650"
-        MinWidth="1200"
+        Height="800" 
+        Width="1600"
+        MinHeight="700"
+        MinWidth="1400"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -21,6 +21,36 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Height" Value="32"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#E5E5E5"/>
+                    <Setter Property="Foreground" Value="#888888"/>
+                    <Setter Property="BorderBrush" Value="#B0B0B0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para DatePicker -->
+        <Style x:Key="ModernDatePicker" TargetType="DatePicker">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#E5E5E5"/>
+                    <Setter Property="Foreground" Value="#888888"/>
+                    <Setter Property="BorderBrush" Value="#B0B0B0"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Estilo para ComboBox -->
@@ -31,7 +61,18 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Height" Value="32"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#E5E5E5"/>
+                    <Setter Property="Foreground" Value="#888888"/>
+                    <Setter Property="BorderBrush" Value="#B0B0B0"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
+
 
         <!-- Estilo para Label -->
         <Style x:Key="ModernLabel" TargetType="Label">
@@ -250,7 +291,7 @@
         <!-- Conteúdo Principal -->
         <Grid Grid.Row="1" Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="420"/>
+                <ColumnDefinition Width="480"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -285,16 +326,50 @@
 
                         <!-- Descrição -->
                         <Label Content="Descrição:" Style="{StaticResource ModernLabel}"/>
-                        <TextBox x:Name="txtDescricao" 
+                        <TextBox x:Name="txtDescricao"
+                                 Style="{StaticResource ModernTextBox}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
                                  Height="60"
-                                 Padding="10"
-                                 FontSize="13"
-                                 BorderBrush="#CCCCCC"
-                                 BorderThickness="1"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Margin="0,0,0,10"/>
+
+                        <!-- Código de Barras -->
+                        <Label Content="Código de Barras:" Style="{StaticResource ModernLabel}"/>
+                        <TextBox x:Name="txtCodigoBarras" 
+                                 Style="{StaticResource ModernTextBox}"
                                  Margin="0,0,0,10"
-                                 VerticalScrollBarVisibility="Auto"/>
+                                 MaxLength="50"/>
+
+                        <!-- Grid com Lote e Datas -->
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Lote -->
+                            <StackPanel Grid.Column="0">
+                                <Label Content="Lote:" Style="{StaticResource ModernLabel}"/>
+                                <TextBox x:Name="txtLote" 
+                                         Style="{StaticResource ModernTextBox}"
+                                         MaxLength="30"/>
+                            </StackPanel>
+
+                            <!-- Data de Fabricação -->
+                            <StackPanel Grid.Column="2">
+                                <Label Content="Data Fabricação:" Style="{StaticResource ModernLabel}"/>
+                                <DatePicker x:Name="dpDataFabricacao" 
+                                           Style="{StaticResource ModernDatePicker}"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Data de Vencimento -->
+                        <Label Content="Data de Vencimento:" Style="{StaticResource ModernLabel}"/>
+                        <DatePicker x:Name="dpDataVencimento" 
+                                   Style="{StaticResource ModernDatePicker}"
+                                   Margin="0,0,0,10"/>
 
                         <!-- Grid com 2 colunas -->
                         <Grid Margin="0,0,0,10">
@@ -397,7 +472,7 @@
 
                         <TextBlock Text="* Campos obrigatórios" 
                                    FontSize="10"
-                                   Foreground="#999999"
+                                   Foreground="red"
                                    FontStyle="Italic"
                                    Margin="0,0,0,16"/>
 
@@ -496,7 +571,7 @@
                             </TextBox>
 
                             <TextBlock IsHitTestVisible="False"
-                                       Text="🔍 Pesquisar por nome, código ou categoria..."
+                                       Text="🔍 Pesquisar por nome, código, categoria, código de barras ou lote..."
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"
                                        Margin="12,0,0,0"
@@ -523,32 +598,39 @@
                                 Click="BtnPesquisar_Click"/>
                     </Grid>
 
-                    <!-- DataGrid -->
-                    <DataGrid Grid.Row="2"
-                              x:Name="dgProdutos"
-                              Style="{StaticResource ModernDataGrid}"
-                              SelectionChanged="DgProdutos_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="70"/>
-                            <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*" MinWidth="180"/>
-                            <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" Width="110"/>
-                            <DataGridTextColumn Header="Unid." Binding="{Binding Unidade}" Width="60"/>
-                            <DataGridTextColumn Header="Preço Custo" Binding="{Binding PrecoCusto, StringFormat=C2}" Width="100"/>
-                            <DataGridTextColumn Header="Preço Venda" Binding="{Binding PrecoVenda, StringFormat=C2}" Width="100"/>
-                            <DataGridTextColumn Header="Estoque" Binding="{Binding Estoque}" Width="75"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="70"/>
-                        </DataGrid.Columns>
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Status}" Value="Inativo">
-                                        <Setter Property="Foreground" Value="#999999"/>
-                                        <Setter Property="FontStyle" Value="Italic"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-                    </DataGrid>
+                    <!-- DataGrid com Scroll Horizontal -->
+                    <ScrollViewer Grid.Row="2" 
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
+                        <DataGrid x:Name="dgProdutos"
+                                  Style="{StaticResource ModernDataGrid}"
+                                  SelectionChanged="DgProdutos_SelectionChanged"
+                                  MinWidth="1050">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Código" Binding="{Binding Codigo}" Width="70"/>
+                                <DataGridTextColumn Header="Nome" Binding="{Binding Nome}" Width="*" MinWidth="150"/>
+                                <DataGridTextColumn Header="Categoria" Binding="{Binding Categoria}" Width="100"/>
+                                <DataGridTextColumn Header="Cód. Barras" Binding="{Binding CodigoBarras}" Width="110"/>
+                                <DataGridTextColumn Header="Lote" Binding="{Binding Lote}" Width="80"/>
+                                <DataGridTextColumn Header="Fabricação" Binding="{Binding DataFabricacao, StringFormat=dd/MM/yyyy}" Width="90"/>
+                                <DataGridTextColumn Header="Vencimento" Binding="{Binding DataVencimento, StringFormat=dd/MM/yyyy}" Width="90"/>
+                                <DataGridTextColumn Header="Unid." Binding="{Binding Unidade}" Width="55"/>
+                                <DataGridTextColumn Header="Preço Venda" Binding="{Binding PrecoVenda, StringFormat=C2}" Width="95"/>
+                                <DataGridTextColumn Header="Estoque" Binding="{Binding Estoque}" Width="70"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="65"/>
+                            </DataGrid.Columns>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}" Value="Inativo">
+                                            <Setter Property="Foreground" Value="#999999"/>
+                                            <Setter Property="FontStyle" Value="Italic"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                        </DataGrid>
+                    </ScrollViewer>
 
                     <!-- Rodapé com Paginação e Ações -->
                     <Grid Grid.Row="3" Margin="0,12,0,0">

@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SmartSystemPDV.Data.Context;
+﻿using SmartSystemPDV.Data.Context;
 using SmartSystemPDV.Data.Repositories;
 using SmartSystemPDV.Data.Repositories.CadastroProduto;
 using SmartSystemPDV.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartSystemPDV.Repositories.CadastroProduto;
 
@@ -62,5 +62,48 @@ public class ProdutoRepository : Repository<Produto>, IProdutoRepository
     {
         return await _dbSet.Where(p => p.Status == "Ativo")
                           .SumAsync(p => p.PrecoVenda * p.Estoque);
+    }
+
+    public async Task<IEnumerable<Produto>> SearchAsync(string termo)
+    {
+        if (string.IsNullOrWhiteSpace(termo))
+            return await GetProdutosAtivosAsync();
+
+        termo = termo.ToLower().Trim();
+
+        return await _dbSet
+            .Include(p => p.Categoria)
+            .Where(p => p.Ativo && (
+                p.Codigo.ToString().Contains(termo) ||
+                p.CodigoBarras.ToLower().Contains(termo) ||
+                p.Nome.ToLower().Contains(termo)
+            ))
+            .OrderBy(p => p.Nome)
+            .Take(50)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Produto>> GetProdutosBaixoEstoqueAsync()
+    {
+        return await _dbSet
+            .Include(p => p.Categoria)
+            .Where(p => p.Ativo && p.EstoqueAtual <= p.EstoqueMinimo)
+            .OrderBy(p => p.EstoqueAtual)
+            .ToListAsync();
+    }
+
+    public async Task<bool> AtualizarEstoqueAsync(int produtoId, int quantidade)
+    {
+        var produto = await GetByIdAsync(produtoId);
+        if (produto == null)
+            return false;
+
+        produto.EstoqueAtual += quantidade;
+        produto.DataAtualizacao = DateTime.Now;
+
+        _dbSet.Update(produto);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }
