@@ -1,9 +1,9 @@
-﻿using SmartSystemPDV.Data.Repositories.CadastroProduto;
+using SmartSystemPDV.Data.Repositories.CadastroProduto;
 using SmartSystemPDV.Data.Repositories.CadastroUsuarios;
 using SmartSystemPDV.Data.Repositories.FormaPagamentos;
+using SmartSystemPDV.Data.Repositories.MovimentacaoEstoque;
 using SmartSystemPDV.Data.Repositories.Vendas;
-using System;
-using System.Threading.Tasks;
+using SmartSystemPDV.Data.Repositories.Categorias;
 
 namespace SmartSystemPDV.Data.UnitOfWork;
 
@@ -12,21 +12,30 @@ namespace SmartSystemPDV.Data.UnitOfWork;
 /// </summary>
 public interface IUnitOfWork : IDisposable
 {
-    // Repositórios
-    IProdutoRepository Produtos { get; }
-    //IClienteRepository Clientes { get; }
-    IVendaRepository Vendas { get; }
-    //IMovimentacaoEstoqueRepository MovimentacoesEstoque { get; }
-    //IUsuarioRepository Usuarios { get; }
-    IFormaPagamentoRepository FormasPagamento { get; }
-    //ICategoriaRepository Categorias { get; }
+    #region Repositórios
 
-    // Métodos para salvar alterações
+    IProdutoRepository Produtos { get; }
+    // IClienteRepository Clientes { get; }
+    IVendaRepository Vendas { get; }
+    IMovimentacaoEstoqueRepository MovimentacoesEstoque { get; }
+    IUsuarioRepository Usuarios { get; }
+    IFormaPagamentoRepository FormasPagamento { get; }
+    ICategoriaRepository Categorias { get; }
+
+    #endregion
+
+    #region Persistência
+
     int SaveChanges();
     Task<int> SaveChangesAsync();
 
-    // Métodos para transações
+    #endregion
+
+    #region Transações
+
     void BeginTransaction();
     void Commit();
     void Rollback();
+
+    #endregion
 }

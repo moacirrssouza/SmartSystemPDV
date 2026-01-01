@@ -1,10 +1,12 @@
-﻿using SmartSystemPDV.Data.Repositories.CadastroProduto;
-using SmartSystemPDV.Data.Repositories.CadastroUsuarios;
-using SmartSystemPDV.Repositories.CadastroProduto;
-using Microsoft.EntityFrameworkCore.Storage;
 using SmartSystemPDV.Data.Context;
+using SmartSystemPDV.Data.Repositories.CadastroProduto;
+using SmartSystemPDV.Data.Repositories.CadastroUsuarios;
 using SmartSystemPDV.Data.Repositories.Vendas;
 using SmartSystemPDV.Data.Repositories.FormaPagamentos;
+using SmartSystemPDV.Data.Repositories.MovimentacaoEstoque;
+using SmartSystemPDV.Data.Repositories.Categorias;
+using SmartSystemPDV.Repositories.CadastroProduto;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace SmartSystemPDV.Data.UnitOfWork;
 
@@ -13,98 +15,54 @@ namespace SmartSystemPDV.Data.UnitOfWork;
 /// </summary>
 public class UnitOfWork : IUnitOfWork
 {
+    #region Campos Privados
+
     private readonly AppDbContext _context;
     private IDbContextTransaction _transaction;
+    private bool _disposed;
 
-    // Repositórios
     private IProdutoRepository _produtos;
-    //private IClienteRepository _clientes;
+    
     private IVendaRepository _vendas;
-    //private IMovimentacaoEstoqueRepository _movimentacoesEstoque;
-    //private IUsuarioRepository _usuarios;
+    private IMovimentacaoEstoqueRepository _movimentacoesEstoque;
+    private IUsuarioRepository _usuarios;
     private IFormaPagamentoRepository _formasPagamento;
-    //private ICategoriaRepository _categorias;
+    private ICategoriaRepository _categorias;
+
+    #endregion
+
+    #region Construtor
 
     public UnitOfWork(AppDbContext context)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
 
+    #endregion
+
     #region Propriedades dos Repositórios
 
-    public IProdutoRepository Produtos
-    {
-        get
-        {
-            if (_produtos == null)
-                _produtos = new ProdutoRepository(_context);
-            return _produtos;
-        }
-    }
+    public IProdutoRepository Produtos =>
+        _produtos ??= new ProdutoRepository(_context);
 
-    //public IClienteRepository Clientes
-    //{
-    //    get
-    //    {
-    //        if (_clientes == null)
-    //            _clientes = new ClienteRepository(_context);
-    //        return _clientes;
-    //    }
-    //}
+    public IVendaRepository Vendas =>
+        _vendas ??= new VendaRepository(_context);
 
-    public IVendaRepository Vendas
-    {
-        get
-        {
-            if (_vendas == null)
-                _vendas = new VendaRepository(_context);
-            return _vendas;
-        }
-    }
+    public IMovimentacaoEstoqueRepository MovimentacoesEstoque =>
+        _movimentacoesEstoque ??= new MovimentacaoEstoqueRepository(_context);
 
-    //public IMovimentacaoEstoqueRepository MovimentacoesEstoque
-    //{
-    //    get
-    //    {
-    //        if (_movimentacoesEstoque == null)
-    //            _movimentacoesEstoque = new MovimentacaoEstoqueRepository(_context);
-    //        return _movimentacoesEstoque;
-    //    }
-    //}
+    public IUsuarioRepository Usuarios =>
+        _usuarios ??= new UsuarioRepository(_context);
 
-    //public IUsuarioRepository Usuarios
-    //{
-    //    get
-    //    {
-    //        if (_usuarios == null)
-    //            _usuarios = new UsuarioRepository(_context);
-    //        return _usuarios;
-    //    }
-    //}
+    public IFormaPagamentoRepository FormasPagamento =>
+        _formasPagamento ??= new FormaPagamentoRepository(_context);
 
-    public IFormaPagamentoRepository FormasPagamento
-    {
-        get
-        {
-            if (_formasPagamento == null)
-                _formasPagamento = new FormaPagamentoRepository(_context);
-            return _formasPagamento;
-        }
-    }
-
-    //public ICategoriaRepository Categorias
-    //{
-    //    get
-    //    {
-    //        if (_categorias == null)
-    //            _categorias = new CategoriaRepository(_context);
-    //        return _categorias;
-    //    }
-    //}
+    public ICategoriaRepository Categorias =>
+        _categorias ??= new SmartSystemPDV.Repositories.Categorias.CategoriaRepository(_context);
 
     #endregion
 
-    #region Métodos de Salvamento
+    #region Persistência
 
     public int SaveChanges()
     {
@@ -132,14 +90,12 @@ public class UnitOfWork : IUnitOfWork
 
     #endregion
 
-    #region Métodos de Transação
+    #region Transações
 
     public void BeginTransaction()
     {
         if (_transaction != null)
-        {
             throw new InvalidOperationException("Uma transação já está em andamento.");
-        }
 
         _transaction = _context.Database.BeginTransaction();
     }
@@ -147,9 +103,7 @@ public class UnitOfWork : IUnitOfWork
     public void Commit()
     {
         if (_transaction == null)
-        {
             throw new InvalidOperationException("Não há transação em andamento para confirmar.");
-        }
 
         try
         {
@@ -163,7 +117,7 @@ public class UnitOfWork : IUnitOfWork
         }
         finally
         {
-            _transaction?.Dispose();
+            _transaction.Dispose();
             _transaction = null;
         }
     }
@@ -171,37 +125,27 @@ public class UnitOfWork : IUnitOfWork
     public void Rollback()
     {
         if (_transaction == null)
-        {
             throw new InvalidOperationException("Não há transação em andamento para reverter.");
-        }
 
-        try
-        {
-            _transaction.Rollback();
-        }
-        finally
-        {
-            _transaction?.Dispose();
-            _transaction = null;
-        }
+        _transaction.Rollback();
+        _transaction.Dispose();
+        _transaction = null;
     }
 
     #endregion
 
     #region Dispose
 
-    private bool _disposed = false;
-
     protected virtual void Dispose(bool disposing)
     {
-        if (!_disposed)
+        if (_disposed) return;
+
+        if (disposing)
         {
-            if (disposing)
-            {
-                _transaction?.Dispose();
-                _context?.Dispose();
-            }
+            _transaction?.Dispose();
+            _context.Dispose();
         }
+
         _disposed = true;
     }
 

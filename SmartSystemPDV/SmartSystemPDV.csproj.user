@@ -5,6 +5,12 @@
     <Compile Update="View\CadastroUsuarios\CadastroUsuariosWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Caixa\CaixaWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\Caixa\FinalizarVendaWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\GerenciarPermissoes\GerenciarPermissoesWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

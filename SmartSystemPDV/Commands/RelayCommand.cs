@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 
 namespace SmartSystemPDV.Commands;
 
@@ -11,6 +11,11 @@ public class RelayCommand : ICommand
     {
         add { CommandManager.RequerySuggested += value; }
         remove { CommandManager.RequerySuggested -= value; }
+    }
+
+    public void RaiseCanExecuteChanged()
+    {
+        CommandManager.InvalidateRequerySuggested();
     }
 
     public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)

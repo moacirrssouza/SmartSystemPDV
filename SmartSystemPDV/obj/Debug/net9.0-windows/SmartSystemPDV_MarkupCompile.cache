@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Projetos\SmartSystemPDV\SmartSystemPDV\App.xaml
-8-1002948032
+12214244437
 
-451094362133
+64-270217125
 2371213841524
-Controls\SearchableComboBox.xaml;MainWindow.xaml;View\CadastroProdutos\CadastroProdutosWindow.xaml;View\CadastroUsuarios\CadastroUsuariosWindow.xaml;View\ControleEstoque\ControleEstoqueWindow.xaml;View\GerenciarPermissoes\GerenciarPermissoesWindow.xaml;View\Login\LoginView.xaml;View\Vendas\VendaWindow.xaml;
+Controls\SearchableComboBox.xaml;MainWindow.xaml;View\CadastroProdutos\CadastroProdutosWindow.xaml;View\CadastroUsuarios\CadastroUsuariosWindow.xaml;View\Caixa\BuscaProdutoWindow.xaml;View\Caixa\CaixaWindow.xaml;View\Caixa\FinalizarVendaWindow.xaml;View\Categorias\CategoriasWindow.xaml;View\ControleEstoque\ControleEstoqueWindow.xaml;View\GerenciarPermissoes\GerenciarPermissoesWindow.xaml;View\Login\LoginView.xaml;View\Vendas\VendaWindow.xaml;
 
 False
 
