@@ -126,22 +126,25 @@
 
         <!-- Estilo para o botão numérico do teclado -->
         <Style x:Key="NumpadButton" TargetType="Button">
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
             <Setter Property="Foreground" Value="#333333"/>
             <Setter Property="BorderBrush" Value="#DDDDDD"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="24"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Height" Value="60"/>
-            <Setter Property="Margin" Value="4"/>
+            <Setter Property="Height" Value="62"/>
+            <Setter Property="Margin" Value="6"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="6">
+                                CornerRadius="12">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="1" Opacity="0.12" Color="#000000"/>
+                            </Border.Effect>
                             <ContentPresenter HorizontalAlignment="Center" 
                                             VerticalAlignment="Center"/>
                         </Border>
@@ -150,10 +153,12 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0F0F0"/>
+                    <Setter Property="Background" Value="#F5F7FA"/>
+                    <Setter Property="BorderBrush" Value="#C9D1D9"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#E0E0E0"/>
+                    <Setter Property="Background" Value="#E8EEF5"/>
+                    <Setter Property="BorderBrush" Value="#B7C4D3"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -420,7 +425,7 @@
                         <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
@@ -435,13 +440,13 @@
                                 </TextBox.InputBindings>
                             </TextBox>
 
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,10,0">
-                                <Label Content="Qtd" Style="{StaticResource ModernLabel}" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,10,0">
+                                <Label Content="Quantidade" Style="{StaticResource ModernLabel}" Foreground="#1A4D7A" Margin="0,0,0,6" VerticalAlignment="Center"/>
                                 <TextBox x:Name="txtQuantidadeProduto"
                                          Text="{Binding QuantidadeProduto, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource ModernTextBox}"
                                          Height="50"
-                                         Width="100"
+                                         Width="140"
                                          VerticalContentAlignment="Center"
                                          HorizontalContentAlignment="Center"
                                          TextAlignment="Center"/>
@@ -451,7 +456,7 @@
                                     Content="📋 Busca Avançada (F2)"
                                     Command="{Binding AbrirBuscaAvancadaCommand}"
                                     Style="{StaticResource PrimaryButton}"
-                                    Width="180"
+                                    Width="200"
                                     Height="50"/>
 
                             <Button Grid.Column="3"
@@ -566,12 +571,38 @@
                                        Foreground="#1A4D7A"
                                        Margin="0,0,0,10"/>
 
-                            <ComboBox Grid.Row="1"
-                                      ItemsSource="{Binding Clientes}"
-                                      SelectedItem="{Binding ClienteSelecionado}"
-                                      DisplayMemberPath="Nome"
-                                      Style="{StaticResource ModernComboBox}"
-                                      Margin="0,0,0,8"/>
+                            <Grid Grid.Row="1" Margin="0,0,0,8">
+                                <ComboBox x:Name="cbCliente"
+                                          ItemsSource="{Binding Clientes}"
+                                          SelectedItem="{Binding ClienteSelecionado}"
+                                          DisplayMemberPath="Nome"
+                                          Style="{StaticResource ModernComboBox}"/>
+                                <TextBlock IsHitTestVisible="False"
+                                           Text="Selecione o cliente"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Margin="12,0,0,0"
+                                           Foreground="#9AA0A6"
+                                           FontSize="13">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedItem, ElementName=cbCliente}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Text="👤"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,10,0"
+                                           FontSize="16"
+                                           Foreground="#9AA0A6"
+                                           IsHitTestVisible="False"/>
+                            </Grid>
 
                             <Button Grid.Row="2"
                                     Content="➕ Cadastro Rápido"
@@ -596,29 +627,29 @@
                                    Foreground="#1A4D7A"
                                    Margin="0,0,0,12"/>
 
-                        <!-- Subtotal -->
                         <Grid Margin="0,0,0,8">
                             <TextBlock Text="Subtotal:" 
-                                       FontSize="13"
-                                       Foreground="#666666"
-                                       HorizontalAlignment="Left"/>
-                            <TextBlock Text="{Binding Subtotal, StringFormat={}R$ {0:N2}}" 
                                        FontSize="14"
+                                       Foreground="#5F6B7A"
+                                       HorizontalAlignment="Left"
+                                       FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Subtotal, StringFormat={}R$ {0:N2}}" 
+                                       FontSize="16"
                                        FontWeight="Bold"
                                        HorizontalAlignment="Right"
-                                       Foreground="#333333"/>
+                                       Foreground="#1A4D7A"/>
                         </Grid>
 
                         <Grid Margin="0,0,0,6">
                             <TextBlock Text="Peso Total:" 
-                                       FontSize="12"
-                                       Foreground="#666666"
+                                       FontSize="13"
+                                       Foreground="#5F6B7A"
                                        HorizontalAlignment="Left"/>
                             <TextBlock Text="{Binding PesoTotal, StringFormat={}{0:N2} kg}" 
-                                       FontSize="12"
+                                       FontSize="13"
                                        FontWeight="SemiBold"
                                        HorizontalAlignment="Right"
-                                       Foreground="#666666"/>
+                                       Foreground="#5F6B7A"/>
                         </Grid>
                     </StackPanel>
                 </Border>
